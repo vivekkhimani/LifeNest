@@ -4,4 +4,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hello, World!")
+    context = {
+        'page_name': 'Heping Hand | Home',
+    }
+    return render(request, 'covid/base.html', context=context)
