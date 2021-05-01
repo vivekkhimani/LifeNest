@@ -39,7 +39,7 @@ a {
 .hero {
   height: 100vh;
   width: 100%;
-  background: #eb4d55; }
+  background: #ffffff; }
 
 .site-navbar {
   margin-bottom: 0px;
@@ -75,7 +75,7 @@ a {
     padding: 0;
     margin-bottom: 0; }
     .site-navbar .site-navigation .site-menu .active {
-      color: #eb4d55 !important; }
+      color: #000000 !important; }
     .site-navbar .site-navigation .site-menu a {
       text-decoration: none !important;
       display: inline-block; }
@@ -86,7 +86,7 @@ a {
         margin-right: 15px;
         padding: 20px 0px;
         font-size: 15px;
-        color: rgba(255, 255, 255, 0.7) !important;
+        color: #000000 !important;
         display: inline-block;
         text-decoration: none !important;
         position: relative; }
@@ -103,15 +103,15 @@ a {
           -webkit-transition: .3s transform ease;
           -o-transition: .3s transform ease;
           transition: .3s transform ease;
-          background: #fff; }
+          background: #000000; }
         .site-navbar .site-navigation .site-menu > li > a:hover {
-          color: #fff !important; }
+          color: #000000 !important; }
           .site-navbar .site-navigation .site-menu > li > a:hover:before {
             -webkit-transform: scale(1);
             -ms-transform: scale(1);
             transform: scale(1); }
       .site-navbar .site-navigation .site-menu > li.active > a {
-        color: #fff !important; }
+        color: #000000 !important; }
         .site-navbar .site-navigation .site-menu > li.active > a:before {
           -webkit-transform: scale(1);
           -ms-transform: scale(1);

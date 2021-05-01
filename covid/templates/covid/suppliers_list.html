@@ -1,0 +1,89 @@
+{% extends 'covid/base.html' %}
+
+{%  load static %}
+
+{%  block content %}
+    <div class="row" style="margin-top:10px;"?>
+        <div class="card" style="width: 100%;">
+            <h5 class="card-header bg-light">
+                COVID Resource List
+            </h5>
+            <div class="card-body">
+                <div id="resource_list_grid" class="ag-theme-balham" style="width: 100%; height: 80vh;"></div>
+            </div>
+        </div>
+    </div>
+{%  endblock %}
+
+{% block script %}
+    <script>
+
+    //basic information about each column
+    var columnDefs = [
+        {
+            headerName: "Full Name",
+            field: "name",
+            filter: "agTextColumnFilter",
+        },
+        {
+            headerName: "State",
+            field: "state",
+        },
+        {
+            headerName: "Services",
+            field: "services",
+        },
+        {
+            headerName: "Phone",
+            field: "phone",
+        },
+        {
+            headerName: "Email",
+            field: "email",
+        },
+        {
+            headerName: "Created",
+            field: "last_created",
+            filter: "agDateColumnFilter",
+        },
+    ];
+
+    {#var rowData = [#}
+    {#    {% for resources in resource_list %}#}
+    {#        {name: '{{ resource_list.firstName }}', state: '{{ resource_list.state }}', last_created: '{{ resource_list.created }}',#}
+    {#            services: 'something', phone: '{{ resource_list.phone }}', email: '{{ resource_list.email }}'#}
+    {#        }#}
+    {#    {% endfor %}#}
+    {#];#}
+    var rowData = [
+        {name: 'Vivek', state: 'Gujarat', last_created: '04072021', services: 'true', phone: 'yup', email: 'yup'},
+        {name: 'Vivek', state: 'Rajasthan', last_created: '04072021', services: 'false', phone: 'yup', email: 'yup'}
+    ]
+
+    var gridOptions = {
+        animateRows: true,
+        floatingFilter: true,
+        defaultColDef: {
+            flex: 1,
+            filter: true,
+            sortable: true,
+            resizable: true,
+        },
+        columnDefs: columnDefs,
+        rowData: rowData,
+    }
+
+    function sizeGridToFit() {
+        gridOptions.api.sizeColumnsToFit();
+    }
+    window.onresize = sizeGridToFit;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var eGridDiv = document.querySelector('#resource_list_grid');
+        new agGrid.Grid(eGridDiv, gridOptions);
+        sizeGridToFit();
+    })
+    </script>
+{% endblock %}
+
+
