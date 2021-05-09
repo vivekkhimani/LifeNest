@@ -48,17 +48,25 @@
         },
     ];
 
-    {#var rowData = [#}
-    {#    {% for resources in resource_list %}#}
-    {#        {name: '{{ resource_list.firstName }}', state: '{{ resource_list.state }}', last_created: '{{ resource_list.created }}',#}
-    {#            services: 'something', phone: '{{ resource_list.phone }}', email: '{{ resource_list.email }}'#}
-    {#        }#}
-    {#    {% endfor %}#}
-    {#];#}
-    var rowData = [
-        {name: 'Vivek', state: 'Gujarat', last_created: '04072021', services: 'true', phone: 'yup', email: 'yup'},
-        {name: 'Vivek', state: 'Rajasthan', last_created: '04072021', services: 'false', phone: 'yup', email: 'yup'}
-    ]
+
+        var rowData = [
+            {
+                name: 'Vivek Khimani',
+                state: 'Gujarat',
+                last_created: '04072021',
+                services: 'true',
+                phone: '+919998396999',
+                email: 'vivekkhimani07@gmail.com'
+            },
+            {
+                name: 'Vivek Khimani',
+                state: 'Rajasthan',
+                last_created: '04072021',
+                services: 'false',
+                phone: '+919998396999',
+                email: 'vivekkhimani07@gmail.com'
+            }];
+
 
     var gridOptions = {
         animateRows: true,

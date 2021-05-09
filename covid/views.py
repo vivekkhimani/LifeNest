@@ -1,17 +1,23 @@
 from django.db.models import QuerySet
 from django.shortcuts import render, redirect
-from .models import Supplier
+from .models import Supplier, Requester, Service
 
 
 # Create your views here.
 def index(request):
-    return redirect('resource_list')
+    return redirect('supplier_list')
 
 
-def resource_list(request):
+def supplier_list(request):
     try:
-        resource_list: QuerySet[Supplier] = Supplier.objects.all()
-        print(resource_list[0].services)
+        resource_list: QuerySet[Service] = Service.objects.all()
+        suppliers: QuerySet[Supplier] = Supplier.objects.all()
+        requesters: QuerySet[Requester] = Requester.objects.all()
+        print(suppliers[0])
+        print(suppliers[0].service_set.all())
+        print(requesters[0].service_set.all())
+        print(resource_list)
+        print(resource_list[5].supplier.all())
         context = {
             'page_name': 'Helping Hand | Home',
             'resource_list': resource_list,
