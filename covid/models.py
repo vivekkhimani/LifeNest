@@ -17,6 +17,7 @@ class Supplier(models.Model):
     # contacts
     phone = models.CharField(max_length=20, unique=True)
     verifiedPhone = models.BooleanField(default=False)
+    humanVerified = models.BooleanField(default=False)
     email = models.EmailField(max_length=254, blank=True, unique=True)
     verifiedEmail = models.BooleanField(default=False)
     instagramHandle = models.URLField(max_length=200, blank=True)

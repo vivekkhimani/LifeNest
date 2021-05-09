@@ -5,7 +5,14 @@ from .models import Supplier, Requester, Service
 
 # Create your views here.
 def index(request):
-    return redirect('supplier_list')
+    try:
+        context = {
+            'page_name': 'Helping Hand | Home',
+        }
+        return render(request, 'covid/base.html', context=context)
+    except Exception as ex:
+        print(ex)   # fixme: add logger support later
+        return redirect('404')
 
 
 def supplier_list(request):
