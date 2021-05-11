@@ -5,6 +5,7 @@ from django.db import models
 models.py
 """
 from django.db import models
+from django.core.validators import RegexValidator
 
 
 class Supplier(models.Model):
@@ -12,10 +13,12 @@ class Supplier(models.Model):
     firstName = models.CharField(max_length=20)
     lastName = models.CharField(max_length=20)
     state = models.CharField(max_length=20)
+    city = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
-    phone = models.CharField(max_length=20, unique=True)
+    phoneRegex = RegexValidator(regex=r'^\+?1?\d{9,10}$', message="Phone number must be entered in format +919999999999.")
+    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex])
     verifiedPhone = models.BooleanField(default=False)
     humanVerified = models.BooleanField(default=False)
     email = models.EmailField(max_length=254, blank=True, unique=True)
@@ -49,6 +52,7 @@ class Requester(models.Model):
     firstName = models.CharField(max_length=20)
     lastName = models.CharField(max_length=20)
     state = models.CharField(max_length=20)
+    city = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
