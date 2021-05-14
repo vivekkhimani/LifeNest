@@ -2,11 +2,10 @@ from django.contrib import messages
 from django.db import transaction
 from django.db.models import QuerySet
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Supplier, Requester, Service
-from .forms import UserForm, SupplierForm, RequesterForm
+from .forms import MyUserCreationForm, UserForm, SupplierForm, RequesterForm
 
 
 # Create your views here.
@@ -55,7 +54,7 @@ def suppliers(request):
 @transaction.atomic
 def supplier_signup(request):
     if request.method == 'POST':
-        creation_form = UserCreationForm(request.POST)
+        creation_form = MyUserCreationForm(request.POST)
         user_form = UserForm(request.POST)
         supplier_form = SupplierForm(request.POST)
 
@@ -72,16 +71,17 @@ def supplier_signup(request):
         else:
             messages.error(request, 'There was an error creating the profile because:')
     else:
-        creation_form = UserCreationForm(request.POST)
+        creation_form = MyUserCreationForm(request.POST)
         user_form = UserForm(request.POST)
         supplier_form = SupplierForm(request.POST)
-    return render(request, 'covid/signup.html', {'type': 'Supplier', 'creation': creation_form, 'user': user_form, 'supplier': supplier_form})
+    return render(request, 'covid/signup.html',
+                  {'type': 'Supplier', 'creation': creation_form, 'user': user_form, 'supplier': supplier_form})
 
 
 @transaction.atomic
 def requester_signup(request):
     if request.method == 'POST':
-        creation_form = UserCreationForm(request.POST)
+        creation_form = MyUserCreationForm(request.POST)
         user_form = UserForm(request.POST)
         requester_form = RequesterForm(request.POST)
 
@@ -98,13 +98,30 @@ def requester_signup(request):
         else:
             messages.error(request, 'There was an error creating the profile because:')
     else:
-        creation_form = UserCreationForm(request.POST)
+        creation_form = MyUserCreationForm(request.POST)
         user_form = UserForm(request.POST)
         requester_form = SupplierForm(request.POST)
-    return render(request, 'covid/signup.html', {'type': 'Requester', 'creation': creation_form, 'user': user_form, 'supplier': requester_form})
+    return render(request, 'covid/signup.html',
+                  {'type': 'Requester', 'creation': creation_form, 'user': user_form, 'supplier': requester_form})
 
 
-def volunteer_signup(request):
+def supplier_login(request):
+    return
+
+
+def requester_login(request):
+    return
+
+
+def password_reset(request):
+    return
+
+
+def verify_phone(request):
+    return
+
+
+def change_information(request):
     return
 
 

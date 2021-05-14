@@ -55,7 +55,7 @@ class Supplier(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
-    phoneRegex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
+    phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
                                 message="Phone number must be entered in format +919999999999.")
     phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex])
     instagramHandle = models.URLField(max_length=200, blank=True)
@@ -69,7 +69,7 @@ class Supplier(models.Model):
                                   help_text='I agree to provide the following data to the potential people who might be in need of the services.')
 
     def __str__(self):
-        return f"{self.firstName} {self.lastName}, {self.state.upper()}"
+        return f"{self.user.first_name} {self.user.last_name}, {self.state.upper()}"
 
     class Meta:
         ordering = ['-created']
@@ -87,7 +87,9 @@ class Requester(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
-    phone = models.CharField(max_length=20, unique=True)
+    phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
+                                message="Phone number must be entered in format +91-9999999999.")
+    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex])
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
     website = models.URLField(max_length=200, blank=True)
@@ -99,13 +101,45 @@ class Requester(models.Model):
                                   help_text='I agree to provide the following data to the potential suppliers.')
 
     def __str__(self):
-        return f"{self.firstName} {self.lastName}, {self.state.upper()}"
+        return f"{self.user.first_name} {self.user.last_name}, {self.state.upper()}"
 
     class Meta:
         ordering = ['-created']
         indexes = [
             models.Index(fields=['state'], name='state_requester'),
             models.Index(fields=['phone'], name='phone_requester'),
+        ]
+
+
+class Volunteer(models.Model):
+    # demographics
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    state = models.CharField(max_length=30, choices=STATE_CHOICES, default='Delhi')
+    city = models.CharField(max_length=20)
+    created = models.DateTimeField(auto_now_add=True)
+
+    # contacts
+    phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
+                                message="Phone number must be entered in format +919999999999.")
+    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex])
+    instagramHandle = models.URLField(max_length=200, blank=True)
+    facebookHandle = models.URLField(max_length=200, blank=True)
+    website = models.URLField(max_length=200, blank=True)
+
+    verifiedPhone = models.BooleanField(default=False)
+    humanVerified = models.BooleanField(default=False)
+    verifiedEmail = models.BooleanField(default=False)
+    consent = models.BooleanField(blank=False, default=False,
+                                  help_text='I agree to provide the following data to the potential suppliers.')
+
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}, {self.state.upper()}"
+
+    class Meta:
+        ordering = ['-created']
+        indexes = [
+            models.Index(fields=['state'], name='state_volunteer'),
+            models.Index(fields=['phone'], name='phone_volunteer'),
         ]
 
 
