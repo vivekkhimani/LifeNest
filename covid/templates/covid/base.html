@@ -9,6 +9,9 @@
         <title>{{ page_name }}</title>
         <meta content="A web-interface for finding COVID resources in India." name="description">
         <meta content="covid,resources,india,oxygen,ventilator,icu,critical,help,hospitals,beds,contact,sources,link" name="keywords">
+        <meta content="Vivek Khimani" name="author">
+        <meta content="Welcome - Helping Hand" property="og:title">
+        <meta content="{% static 'img/apple-touch-icon.png' %}" property="og:image">
 
         <!-- Favicons -->
         <link rel="shortcut icon" type="image/x-icon" href='{% static 'img/favicon.png' %}' />
@@ -61,15 +64,39 @@
                 <ul>
                     <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
                     <li><a class="nav-link scrollto" href="/#faq">FAQ</a></li>
-                    <li><a class="getstarted scrollto" href="/auth">Get Started</a></li>
+                    <li><a class="getstarted scrollto" href="/#sampleModal" data-bs-toggle="modal" data-bs-target="#sampleModal">Get Started</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
         </div>
     </header><!-- End Header -->
 
-
-    {% block content %}
+    <main id="main">
+{% block content %}
+    <!-- === MODAL === -->
+    <div class="modal fade" id="sampleModal" tabindex="-1" aria-labelledby="sampleModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Get Started</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Please select one of the following:
+                    <ul>
+                        <li><b><em>Supplier</em></b> : User with leads to COVID resources.</li>
+                        <li><b><em>Requester</em></b> : User in need of the COVID resources.</li>
+                        <li><b><em>Volunteer</em></b> : User willing to help us verify the leads.</li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <a href="/supplier_auth"><button type="button" class="btn btn-primary">Supplier</button></a>
+                    <a href="/requester_auth"><button type="button" class="btn btn-primary">Requester</button></a>
+                    <a href="/volunteer_auth"><button type="button" class="btn btn-primary">Volunteer</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
       <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex align-items-center">
         <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
@@ -80,7 +107,7 @@
                 </div>
             </div>
             <div class="text-center">
-                <a href="/" class="btn-get-started scrollto">Get Started</a>
+                <a href="/#sampleModal" class="btn-get-started scrollto" data-bs-toggle="modal" data-bs-target="#sampleModal">Get Started</a>
             </div>
 
             <div class="row icon-boxes">
@@ -104,7 +131,7 @@
                     <div class="icon-box">
                         <div class="icon"><i class="ri-command-line"></i></div>
                         <h4 class="title"><a href="">Volunteers</a></h4>
-                        <p class="description">Wanna help us verify the leads? Contact us and get access to admin panel!</p>
+                        <p class="description">Wanna help us verify the leads? <a href="mailto:vivekkhimani07@gmail.com">Contact us</a> and get access to admin panel!</p>
                     </div>
                 </div>
 
@@ -181,6 +208,7 @@
       </div>
     </section><!-- End Frequently Asked Questions Section -->
     {% endblock %}
+    </main>
 
     {% block script %}
     {% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'covid/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <section class="align-items-center">
+    <div class="container-fluid">
+        <h2>{{ type }} Sign up</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="row form-row" style="margin-top: 20px;">
+                <div class="form-group col-md-4 mb-0">
+                    {{ creation.username|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ creation.password1|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ creation.password2|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row form-row" style="margin-top: 20px;">
+                <div class="form-group col-md-6 mb-0">
+                    {{ user.first_name|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ user.last_name|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row form-row" style="margin-top: 20px">
+                <div class="form-group col-md-6 mb-0">
+                    {{ supplier.phone|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ user.email|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row form-row" style="margin-top: 20px">
+                <div class="form-group col-md-6 mb-0">
+                    {{ supplier.state|as_crispy_field}}
+                </div>
+                <div class="form-group col-md-6 mb-0">
+                    {{ supplier.city|as_crispy_field }}
+                </div>
+            </div>
+            <div class="row form-row" style="margin-top: 20px">
+                <div class="form-group col-md-4 mb-0">
+                    {{ supplier.instagramHandle|as_crispy_field}}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ supplier.facebookHandle|as_crispy_field }}
+                </div>
+                <div class="form-group col-md-4 mb-0">
+                    {{ supplier.website|as_crispy_field }}
+                </div>
+            </div>
+            <div class="form-row" style="margin-top: 20px">
+                {{ supplier.consent|as_crispy_field }}
+            </div>
+        <button type="submit" class="btn btn-primary" style="margin-top: 30px">Sign up</button>
+        </form>
+    </div>
+    </section>
+{% endblock %}

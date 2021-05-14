@@ -6,27 +6,65 @@ models.py
 """
 from django.db import models
 from django.core.validators import RegexValidator
+from django.contrib.auth.models import User, UserManager
+
+STATE_CHOICES = [
+    ('Andhra Pradesh', 'Andhra Pradesh'),
+    ('Arunachal Pradesh', 'Arunachal Pradesh'),
+    ('Assam', 'Assam'),
+    ('Bihar', 'Bihar'),
+    ('Chattisgarh', 'Chattisgarh'),
+    ('Goa', 'Goa'),
+    ('Gujarat', 'Gujarat'),
+    ('Haryana', 'Haryana'),
+    ('Himachal Pradesh', 'Himachal Pradesh'),
+    ('Jharkhand', 'Jharkhand'),
+    ('Karnataka', 'Karnataka'),
+    ('Kerala', 'Kerala'),
+    ('Madhya Pradesh', 'Madhya Pradesh'),
+    ('Maharashtra', 'Maharashtra'),
+    ('Manipur', 'Manipur'),
+    ('Meghalaya', 'Meghalaya'),
+    ('Mizoram', 'Mizoram'),
+    ('Nagaland', 'Nagaland'),
+    ('Odisha', 'Odisha'),
+    ('Punjab', 'Punjab'),
+    ('Rajasthan', 'Rajasthan'),
+    ('Sikkim', 'Sikkim'),
+    ('Tamil Nadu', 'Tamil Nadu'),
+    ('Telangana', 'Telangana'),
+    ('Tripura', 'Tripura'),
+    ('Uttar Pradesh', 'Uttar Pradesh'),
+    ('Uttarakhand', 'Uttarakhand'),
+    ('West Bengal', 'West Bengal'),
+    ('Andaman & Nicobar', 'Andaman & Nicobar'),
+    ('Chandigarh', 'Chandigarh'),
+    ('Delhi', 'Delhi'),
+    ('Jammu & Kashmir', 'Jammu & Kashmir'),
+    ('Ladakh', 'Ladakh'),
+    ('Lakshadweep', 'Lakshadweep'),
+    ('Puducherry', 'Puducherry'),
+]
 
 
 class Supplier(models.Model):
     # demographics
-    firstName = models.CharField(max_length=20)
-    lastName = models.CharField(max_length=20)
-    state = models.CharField(max_length=20)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    state = models.CharField(max_length=30, choices=STATE_CHOICES, default='Delhi')
     city = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
-    phoneRegex = RegexValidator(regex=r'^\+?1?\d{9,10}$', message="Phone number must be entered in format +919999999999.")
+    phoneRegex = RegexValidator(regex=r'^\+?1?\d{9,10}$',
+                                message="Phone number must be entered in format +919999999999.")
     phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex])
-    verifiedPhone = models.BooleanField(default=False)
-    humanVerified = models.BooleanField(default=False)
-    email = models.EmailField(max_length=254, blank=True, unique=True)
-    verifiedEmail = models.BooleanField(default=False)
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
     website = models.URLField(max_length=200, blank=True)
 
+    verifiedPhone = models.BooleanField(default=False)
+    humanVerified = models.BooleanField(default=False)
+    verifiedEmail = models.BooleanField(default=False)
     consent = models.BooleanField(blank=False, default=False,
                                   help_text='I agree to provide the following data to the potential people who might be in need of the services.')
 
@@ -37,32 +75,26 @@ class Supplier(models.Model):
         ordering = ['-created']
         indexes = [
             models.Index(fields=['state'], name='state_supplier'),
-            models.Index(fields=['firstName'], name='first_name_supplier'),
-            models.Index(fields=['lastName'], name='last_name_supplier'),
             models.Index(fields=['phone'], name='phone_supplier'),
-            models.Index(fields=['email'], name='email_supplier'),
-        ]
-        index_together = [
-            ["firstName", "lastName"]
         ]
 
 
 class Requester(models.Model):
     # demographics
-    firstName = models.CharField(max_length=20)
-    lastName = models.CharField(max_length=20)
-    state = models.CharField(max_length=20)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    state = models.CharField(max_length=30, choices=STATE_CHOICES, default='Delhi')
     city = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
     phone = models.CharField(max_length=20, unique=True)
-    verifiedPhone = models.BooleanField(default=False)
-    email = models.EmailField(max_length=254, blank=True, unique=True)
-    verifiedEmail = models.BooleanField(default=False)
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
+    website = models.URLField(max_length=200, blank=True)
 
+    verifiedPhone = models.BooleanField(default=False)
+    humanVerified = models.BooleanField(default=False)
+    verifiedEmail = models.BooleanField(default=False)
     consent = models.BooleanField(blank=False, default=False,
                                   help_text='I agree to provide the following data to the potential suppliers.')
 
@@ -73,13 +105,7 @@ class Requester(models.Model):
         ordering = ['-created']
         indexes = [
             models.Index(fields=['state'], name='state_requester'),
-            models.Index(fields=['firstName'], name='first_name_requester'),
-            models.Index(fields=['lastName'], name='last_name_requester'),
             models.Index(fields=['phone'], name='phone_requester'),
-            models.Index(fields=['email'], name='email_requester'),
-        ]
-        index_together = [
-            ["firstName", "lastName"]
         ]
 
 
