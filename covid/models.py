@@ -56,8 +56,8 @@ class Supplier(models.Model):
 
     # contacts
     phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
-                                message="Phone number must be entered in format +919999999999.")
-    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex])
+                                message="Phone number must be entered in format +91-9999999999.")
+    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex], blank=False, help_text='Verification required for sign up. Format: +91-9999999999')
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
     website = models.URLField(max_length=200, blank=True)
@@ -89,7 +89,7 @@ class Requester(models.Model):
     # contacts
     phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
                                 message="Phone number must be entered in format +91-9999999999.")
-    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex])
+    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex], blank=False, help_text='Verification required for sign up. Format: +91-9999999999')
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
     website = models.URLField(max_length=200, blank=True)
@@ -120,8 +120,8 @@ class Volunteer(models.Model):
 
     # contacts
     phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
-                                message="Phone number must be entered in format +919999999999.")
-    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex])
+                                message="Phone number must be entered in format +91-9999999999.")
+    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex], blank=False, help_text='Verification required for sign up. Format: +91-9999999999')
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
     website = models.URLField(max_length=200, blank=True)

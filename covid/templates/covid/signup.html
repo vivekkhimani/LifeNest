@@ -30,6 +30,9 @@
             <div class="row form-row" style="margin-top: 20px">
                 <div class="form-group col-md-6 mb-0">
                     {{ supplier.phone|as_crispy_field }}
+                    <div class="col-md-4 mb-0" style="margin-top: 20px; margin-bottom: 10px;">
+                        <a href="/auth"><button type="button" class="btn btn-danger">Verify Phone</button></a>
+                    </div>
                 </div>
                 <div class="form-group col-md-6 mb-0">
                     {{ user.email|as_crispy_field }}
