@@ -38,8 +38,8 @@
         firebase.analytics();
     </script>
     <script>
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
-    ui.start('#firebaseui-auth-container', {
+        let ui = new firebaseui.auth.AuthUI(firebase.auth());
+        ui.start('#firebaseui-auth-container', {
           callbacks: {
             signInSuccessWithAuthResult: function(authResult, redirectUrl) {
                 // User successfully signed in.
@@ -60,7 +60,7 @@
                     provider: firebase.auth.PhoneAuthProvider.PROVIDER_ID,
                     recaptchaParameters: {
                         type: 'image', // 'audio'
-                        size: 'normal', // 'invisible' or 'compact'
+                        size: 'invisible', // 'invisible' or 'compact'
                         badge: 'bottomleft' //' bottomright' or 'inline' applies to invisible.
                         },
                     defaultCountry: 'IN',
@@ -69,12 +69,16 @@
             tosUrl: '/',
             privacyPolicyUrl: '/',
     });
-    firebase.auth().onAuthStateChanged(function (user) {
-        if (user) {
-            console.log(user);
-        } else {
-            console.log('No luck!');
-        }
-    })
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                console.log(user);
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', '/verify_phone', true);
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                xhr.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
+                xhr.send(String(user.phone));
+            } else {
+                console.log('No luck!');
+            }});
     </script>
 {% endblock %}

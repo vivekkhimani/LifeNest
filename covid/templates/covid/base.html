@@ -60,6 +60,17 @@
                 Helping Hand
             </a>
 
+            {% if logged_in %}
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
+                    <li><a class="nav-link scrollto" href="/#faq">FAQ</a></li>
+                    <li><a class="nav-link scrollto" href="/" data-bs-toggle="modal" data-bs-target="#signInModal">Profile</a></li>
+                    <li><a class="getstarted scrollto bg-danger" href="/logout">Sign Out</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav><!-- .navbar -->
+            {% else %}
             <nav id="navbar" class="navbar">
                 <ul>
                     <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
@@ -69,6 +80,7 @@
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
+            {% endif %}
         </div>
     </header><!-- End Header -->
     {% endblock %}
@@ -101,12 +113,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    Please select one of the following:
-                    <ul>
-                        <li><b><em>Supplier</em></b> : User with leads to COVID resources.</li>
-                        <li><b><em>Requester</em></b> : User in need of the COVID resources.</li>
-                        <li><b><em>Volunteer</em></b> : User willing to help us verify the leads.</li>
-                    </ul>
+                    Please select one of the following to get started.
                 </div>
                 <div class="modal-footer">
                     <a href="/supplier_auth"><button type="button" class="btn btn-primary">Supplier</button></a>

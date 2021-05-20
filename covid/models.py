@@ -5,7 +5,7 @@ from django.db import models
 models.py
 """
 from django.db import models
-from django.core.validators import RegexValidator
+from phonenumber_field.modelfields import PhoneNumberField
 from django.contrib.auth.models import User, UserManager
 
 STATE_CHOICES = [
@@ -46,6 +46,25 @@ STATE_CHOICES = [
     ('Puducherry', 'Puducherry'),
 ]
 
+ROLE_CHOICES = [
+    ('SUPPLIER', 'SUPPLIER'),
+    ('REQUESTER', 'REQUESTER'),
+    ('VOLUNTEER', 'VOLUNTEER'),
+]
+
+SERVICE_CHOICES = [
+    ('Oxygen', 'Oxygen'),
+    ('Medications (no Remdesivir)', 'Medications (no Remdesivir)'),
+    ('Remdesivir', 'Remdesivir'),
+    ('Hospital Beds', 'Hospital Beds'),
+    ('Ventilator Beds', 'Ventilator Beds'),
+    ('Home-made Food', 'Home-made Food'),
+    ('Ambulance', 'Ambulance'),
+    ('Monetary Donations', 'Monetary Donations'),
+    ('Plasma Donations', 'Plasma Donations'),
+    ('Laboratory Testing', 'Laboratory Testing'),
+]
+
 
 class Supplier(models.Model):
     # demographics
@@ -55,9 +74,7 @@ class Supplier(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
-    phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
-                                message="Phone number must be entered in format +91-9999999999.")
-    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex], blank=False, help_text='Verification required for sign up. Format: +91-9999999999')
+    phone = PhoneNumberField(max_length=20, unique=True, blank=False, help_text='OTP verification will be required as next step. Format: +919999999999')
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
     website = models.URLField(max_length=200, blank=True)
@@ -87,9 +104,7 @@ class Requester(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
-    phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
-                                message="Phone number must be entered in format +91-9999999999.")
-    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex], blank=False, help_text='Verification required for sign up. Format: +91-9999999999')
+    phone = PhoneNumberField(max_length=20, unique=True, blank=False, help_text='OTP verification will be required as next step. Format: +919999999999')
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
     website = models.URLField(max_length=200, blank=True)
@@ -119,9 +134,7 @@ class Volunteer(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     # contacts
-    phoneRegex = RegexValidator(regex=r'^(\+\d{1,3})?-?\s?\d{8,13}',
-                                message="Phone number must be entered in format +91-9999999999.")
-    phone = models.CharField(max_length=20, unique=True, validators=[phoneRegex], blank=False, help_text='Verification required for sign up. Format: +91-9999999999')
+    phone = PhoneNumberField(max_length=20, unique=True, blank=False, help_text='OTP verification will be required as next step. Format: +919999999999')
     instagramHandle = models.URLField(max_length=200, blank=True)
     facebookHandle = models.URLField(max_length=200, blank=True)
     website = models.URLField(max_length=200, blank=True)
@@ -144,21 +157,16 @@ class Volunteer(models.Model):
 
 
 class Service(models.Model):
-    service_choices = [
-        ('Oxygen', 'Oxygen'),
-        ('Medications (no Remdesivir)', 'Medications (no Remdesivir)'),
-        ('Remdesivir', 'Remdesivir'),
-        ('Hospital Beds', 'Hospital Beds'),
-        ('Ventilator Beds', 'Ventilator Beds'),
-        ('Home-made Food', 'Home-made Food'),
-        ('Ambulance', 'Ambulance'),
-        ('Monetary Donations', 'Monetary Donations'),
-        ('Plasma Donations', 'Plasma Donations'),
-        ('Laboratory Testing', 'Laboratory Testing'),
-    ]
-    name = models.CharField(default='Oxygen', choices=service_choices, max_length=70)
+    name = models.CharField(default='Oxygen', choices=SERVICE_CHOICES, max_length=70)
     requester = models.ManyToManyField(Requester)
     supplier = models.ManyToManyField(Supplier)
 
     def __str__(self):
         return self.name
+
+
+class VerifiedPhone(models.Model):
+    phone = PhoneNumberField(max_length=20, unique=True, blank=False, help_text='OTP verification will be required as next step. Format: +919999999999')
+
+    def __str__(self):
+        return str(self.phone)
