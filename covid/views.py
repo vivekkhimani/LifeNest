@@ -3,6 +3,7 @@ from django.db import transaction
 from django.db.models import QuerySet
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.core.exceptions import PermissionDenied
 
 from .models import Participant, Service, VerifiedPhone
 from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm
@@ -17,10 +18,13 @@ def index(request):
 
 
 def landing_view(request):
-    context = {
-        'page_name': 'Life Nest | Welcome',
-    }
-    return render(request, 'covid/landing.html', context=context)
+    if request.user.is_authenticated and request.user.is_active:
+        context = {
+            'page_name': 'Life Nest | Welcome',
+        }
+        return render(request, 'covid/landing.html', context=context)
+    else:
+        raise PermissionDenied
 
 
 @transaction.atomic
@@ -88,4 +92,5 @@ def delete_data(request):
     context = {
         'page_name': 'Helping Hand | Delete'
     }
+    # fixme: make users inactive. don't actually delete them. (or we can provide both the options).
     return render(request, 'covid/delete_data.html', context=context)

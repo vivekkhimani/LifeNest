@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.models import User
 from covid.models import Participant, Service
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.contrib.auth import authenticate
 
 
 class AuthenticationForm(forms.Form):
@@ -12,7 +11,9 @@ class AuthenticationForm(forms.Form):
     def clean_username(self):
         username_entry = self.cleaned_data['username']
         try:
-            user = Participant.objects.get(user__username=username_entry)
+            participant = Participant.objects.get(user__username=username_entry)
+            if not participant.user.is_active:
+                raise forms.ValidationError("The account for this user has been deactivated.")
         except Participant.DoesNotExist as ex:
             raise forms.ValidationError("The user does not exist.")
         return username_entry
