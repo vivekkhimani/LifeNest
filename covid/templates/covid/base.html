@@ -57,7 +57,7 @@
             <!-- <a href="/" class="logo"><img src="{% static 'img/favicon.png' %}" alt="logo" class="img-fluid">Helping Hand</a> -->
             <a class="navbar-brand" href="/">
                 <img src='{% static 'img/favicon.png' %}' width="30" height="30" class="d-inline-block align-top" alt="logo"/>
-                Helping Hand
+                Life Nest
             </a>
 
             {% if logged_in %}
@@ -75,8 +75,9 @@
                 <ul>
                     <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
                     <li><a class="nav-link scrollto" href="/#faq">FAQ</a></li>
-                    <li><a class="nav-link scrollto" href="/#signInModal" data-bs-toggle="modal" data-bs-target="#signInModal">Sign In</a></li>
-                    <li><a class="getstarted scrollto" href="/#sampleModal" data-bs-toggle="modal" data-bs-target="#sampleModal">Sign Up</a></li>
+                    <li><a class="nav-link scrollto" href="mailto:vivekkhimani07@gmail.com">Volunteer</a></li>
+                    <li><a class="nav-link scrollto" href="/login">Sign In</a></li>
+                    <li><a class="getstarted scrollto" href="/auth">Sign Up</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -86,50 +87,14 @@
     {% endblock %}
 
     <main id="main">
-    <!-- === SIGN IN MODAL === -->
-    <div class="modal fade" id="signInModal" tabindex="-1" aria-labelledby="signInModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel">Sign In</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Please select one of the following to sign in.
-                </div>
-                <div class="modal-footer">
-                    <a href="/supplier_auth"><button type="button" class="btn btn-primary">Supplier</button></a>
-                    <a href="/requester_auth"><button type="button" class="btn btn-primary">Requester</button></a>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- === SIGN UP MODAL === -->
-    <div class="modal fade" id="sampleModal" tabindex="-1" aria-labelledby="sampleModal" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="exampleModalLabel">Sign Up</h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Please select one of the following to get started.
-                </div>
-                <div class="modal-footer">
-                    <a href="/supplier_auth"><button type="button" class="btn btn-primary">Supplier</button></a>
-                    <a href="/requester_auth"><button type="button" class="btn btn-primary">Requester</button></a>
-                    <a href="mailto:vivekkhimani07@gmail.com"><button type="button" class="btn btn-primary">Volunteer</button></a>
-                </div>
-            </div>
-        </div>
-    </div>
-{% block content %}
+
+    {% block content %}
       <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex align-items-center">
         <div class="container position-relative" data-aos="fade-up" data-aos-delay="100">
             <div class="row justify-content-center">
                 <div class="col-xl-7 col-lg-9 text-center">
-                    <h1>Helping Hand</h1>
+                    <h1>Life Nest</h1>
                     <em><h2>Single stop solution for sharing the COVID-related leads in India</h2></em>
                 </div>
             </div>

@@ -3,154 +3,76 @@ from django.db import transaction
 from django.db.models import QuerySet
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import Group
-from django.http import HttpResponse
 
-from .models import Supplier, Requester, Service, VerifiedPhone
-from .forms import SupplierForm, RequesterForm, MyUserCreationForm
+from .models import Participant, Service, VerifiedPhone
+from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm
 
 
 # Create your views here.
 def index(request):
     context = {
-        'page_name': 'Helping Hand | Home',
+        'page_name': 'Life Nest | Home',
     }
-    if request.user.is_authenticated:
-        context['logged_in'] = True
-        context['current_user'] = request.user
-    else:
-        context['logged_in'] = False
-        context['current_user'] = request.user
-    try:
-        return render(request, 'covid/base.html', context=context)
-    except Exception as ex:
-        print(ex)  # fixme: add logger support later
-        return redirect('404')
+    return render(request, 'covid/base.html', context=context)
 
 
-def supplier_list(request):
-    try:
-        resource_list: QuerySet[Service] = Service.objects.all()
-        suppliers: QuerySet[Supplier] = Supplier.objects.all()
-        requesters: QuerySet[Requester] = Requester.objects.all()
-        print(suppliers[0])
-        print(suppliers[0].service_set.all())
-        print(requesters[0].service_set.all())
-        print(resource_list)
-        print(resource_list[5].supplier.all())
-        context = {
-            'page_name': 'Helping Hand | Home',
-            'resource_list': resource_list,
-        }
-        return render(request, 'covid/suppliers_list.html', context=context)
-    except Exception as ex:
-        print(ex)  # fixme: add logger support later
-        return redirect('404')
-
-
-def suppliers(request):
-    try:
-        context = {
-            'page_name': 'Helping Hand | Get Started'
-        }
-        return render(request, 'covid/auth.html', context=context)
-    except Exception as ex:
-        print(ex)
-        return redirect('404')
+def landing_view(request):
+    context = {
+        'page_name': 'Life Nest | Welcome',
+    }
+    return render(request, 'covid/landing.html', context=context)
 
 
 @transaction.atomic
-def supplier_signup(request):
+def participant_signup(request):
     if request.method == 'POST':
         creation_form = MyUserCreationForm(request.POST)
-        supplier_form = SupplierForm(request.POST)
+        participant_form = ParticipantForm(request.POST)
 
-        if creation_form.is_valid() and supplier_form.is_valid():
-            username = creation_form.cleaned_data.get('username')
-            raw_password = creation_form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            user_instance = creation_form.save(commit=False)
-            group = Group.objects.get(name="Supplier")
-            user_instance.groups.add(group)
-            user_instance.save()
-            supplier = supplier_form.save(commit=False)
-            supplier.user = user_instance
-            supplier.save()
-            messages.success(request, 'Your supplier account was created successfully.')
-            return redirect('supplier_list')
+        if creation_form.is_valid() and participant_form.is_valid():
+            user_instance = creation_form.save()
+            login(request, user_instance)
+            participant = participant_form.save(commit=False)
+            participant.user = user_instance
+            participant.save()
+            messages.success(request, 'Your account was created successfully.')
+            return redirect('landing')
         else:
             messages.error(request, 'There was an error creating the profile because:')
     else:
         creation_form = MyUserCreationForm(request.POST)
-        supplier_form = SupplierForm(request.POST)
+        participant_form = ParticipantForm(request.POST)
     return render(request, 'covid/signup.html',
-                  {'page_name': 'Helping Hand | Supplier', 'type': 'Supplier', 'creation': creation_form, 'supplier': supplier_form})
+                  {'page_name': 'Life Nest | Sign Up', 'creation': creation_form, 'participant': participant_form})
 
 
 @transaction.atomic
-def requester_signup(request):
+def signin(request):
     if request.method == 'POST':
-        creation_form = MyUserCreationForm(request.POST)
-        requester_form = RequesterForm(request.POST)
+        authentication_form = AuthenticationForm(request.POST)
 
-        if creation_form.is_valid() and requester_form.is_valid():
-            username = creation_form.cleaned_data.get('username')
-            raw_password = creation_form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            user_instance = creation_form.save(commit=False)
-            group = Group.objects.get(name="Supplier")
-            user_instance.groups.add(group)
-            user_instance.save()
-            requester = requester_form.save(commit=False)
-            requester.user = user_instance
-            requester.save()
-            messages.success(request, 'Your supplier account was created successfully.')
-            return redirect('supplier_list')
-        else:
-            messages.error(request, 'There was an error creating the profile because:')
+        if authentication_form.is_valid():
+            username = authentication_form.cleaned_data.get('username')
+            password = authentication_form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if not user:
+                authentication_form.add_error(field='password', error='Incorrect password for the username.')
+            else:
+                login(request, user)
+                return redirect('landing')
     else:
-        creation_form = MyUserCreationForm(request.POST)
-        requester_form = SupplierForm(request.POST)
-    return render(request, 'covid/signup.html',
-                  {'page_name': 'Helping Hand | Requester', 'type': 'Requester', 'creation': creation_form, 'supplier': requester_form})
+        authentication_form = AuthenticationForm(request.POST)
 
-
-def supplier_signin(request):
-    return
-
-
-def requester_signin(request):
-    return
+    return render(request, 'covid/login.html',
+                  {'page_name': 'Life Nest | Sign In', 'authentication': authentication_form})
 
 
 def reset_password(request):
     return
 
 
-def verify_phone_number(request):
-    try:
-        if request.method == 'POST':
-            get_value = request.body
-            print(get_value)
-            phone_number = request.POST.get("phone_number")
-            print(phone_number)
-            # noinspection PyBroadException
-            try:
-                VerifiedPhone.objects.create(phone=phone_number)
-                return HttpResponse(status=201)
-            except Exception as ex:
-                print(ex)  # fixme: enable logging for later
-                return redirect('fallback')
-
-        else:
-            return redirect('index')
-
-    except Exception as ex:
-        print(ex)
-        return redirect('404')
+def add_superuser(request):
+    return
 
 
 def change_information(request):
@@ -158,27 +80,12 @@ def change_information(request):
 
 
 def signout(request):
-    try:
-        logout(request)
-        return redirect('index')
-    except Exception as ex:
-        print(ex)
-        return redirect('404')
+    logout(request)
+    return redirect('index')
 
 
 def delete_data(request):
-    try:
-        context = {
-            'page_name': 'Helping Hand | Delete'
-        }
-        return render(request, 'covid/delete_data.html', context=context)
-    except Exception as ex:
-        print(ex)
-        return redirect('404')
-
-
-def fallback(request):
     context = {
-        'page_name': 'HTTP: 404'
+        'page_name': 'Helping Hand | Delete'
     }
-    return render(request, 'covid/404.html', context=context)
+    return render(request, 'covid/delete_data.html', context=context)

@@ -3,4 +3,23 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+    <section class="align-items-center">
+        <div class="container-fluid">
+            <h2>Sign In</h2>
+            <form method="post" style="padding-top: 30px">
+                {% csrf_token %}
+                <div class="row form-row" style="margin-top: 20px;">
+                    <div class="form-group col-md-4 mb-0">
+                        {{ authentication.username|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row form-row" style="margin-top: 20px;">
+                    <div class="form-group col-md-4 mb-0">
+                        {{ authentication.password|as_crispy_field }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 30px">Sign In</button>
+            </form>
+        </div>
+    </section>
 {% endblock %}
