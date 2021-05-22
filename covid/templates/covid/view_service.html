@@ -5,28 +5,6 @@
         <div class="container-fluid">
             <h3 style="padding-top: 20px;"><b>Resource Details</b></h3>
             <div class="row container" style="margin-top: 20px;">
-                <div class="row container justify-content-center" style="margin-top: 20px; padding-bottom: 30px;">
-                    <div class="form-check">
-                        {% if instance.delivery %}
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked disabled>
-                        {% else %}
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" disabled>
-                        {% endif %}
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Delivery
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        {% if instance.humanVerified %}
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked disabled>
-                        {% else %}
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" disabled>
-                        {% endif %}
-                        <label class="form-check-label" for="flexCheckChecked">
-                            Verified
-                        </label>
-                    </div>
-                </div>
                 <table class="table table-striped table-bordered">
                     <thead>
                     <tr>
@@ -44,8 +22,35 @@
                         <td>{{ instance.name }}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Pricing Details</th>
-                        <td>{{ instance.pricing_details }}</td>
+                        <th scope="row">Human Verified</th>
+                        {% if instance.humanVerified %}
+                            <td class="table-success">{{ instance.humanVerified }}</td>
+                        {% else %}
+                            <td class="table-danger">{{ instance.humanVerified }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr>
+                        <th scope="row">Free/Paid</th>
+                        {% ifequal instance.payment|stringformat:"s" "FREE" %}
+                            <td class="table-success">{{ instance.payment }}</td>
+                        {% endifequal %}
+                        {% ifequal instance.payment|stringformat:"s" "PAID" %}
+                            <td class="table-danger">{{ instance.payment }}</td>
+                        {% endifequal %}
+                    </tr>
+                    {% ifequal instance.payment|stringformat:"s" "PAID" %}
+                        <tr>
+                            <th scope="row">Pricing Details</th>
+                            <td>{{ instance.pricing_details }}</td>
+                        </tr>
+                    {% endifequal %}
+                    <tr>
+                        <th scope="row">Delivery Available</th>
+                        {% if instance.delivery %}
+                            <td class="table-success">{{ instance.delivery }}</td>
+                        {% else %}
+                            <td class="table-danger">{{ instance.delivery }}</td>
+                        {% endif %}
                     </tr>
                     {% if instance.delivery %}
                         <tr>
