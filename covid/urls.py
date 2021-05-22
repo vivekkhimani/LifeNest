@@ -1,5 +1,4 @@
 from django.urls import path
-from django.views.generic import TemplateView
 
 from . import views
 
@@ -13,4 +12,6 @@ urlpatterns = [
     path('create_superuser', views.add_superuser, name='create_superuser'),
     path('logout', views.signout, name='logout'),
     path('landing', views.landing_view, name='landing'),
+    path('add_service', views.add_resource, name='add_service'),
+    path('view_service/<int:pk>/', views.view_resource, name='view_service')
 ]

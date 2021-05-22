@@ -46,10 +46,9 @@ STATE_CHOICES = [
     ('Puducherry', 'Puducherry'),
 ]
 
-ROLE_CHOICES = [
-    ('SUPPLIER', 'SUPPLIER'),
-    ('REQUESTER', 'REQUESTER'),
-    ('VOLUNTEER', 'VOLUNTEER'),
+PAYMENT_CHOICES = [
+    ('PAID', 'PAID'),
+    ('FREE', 'FREE'),
 ]
 
 SERVICE_CHOICES = [
@@ -66,22 +65,13 @@ SERVICE_CHOICES = [
 ]
 
 
-class Service(models.Model):
-    name = models.CharField(default='Oxygen', choices=SERVICE_CHOICES, max_length=70)
-    additional_details = models.CharField(max_length=5000, blank=True)
-
-    def __str__(self):
-        return self.name
-
-
 class Participant(models.Model):
     # demographics
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    state = models.CharField(max_length=30, choices=STATE_CHOICES, default='Delhi')
+    state = models.CharField(max_length=30, choices=STATE_CHOICES, default='Andhra Pradesh')
     city = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
-    supplier_services = models.ManyToManyField(Service, related_name='supplier_services')
-    requester_services = models.ManyToManyField(Service, related_name='requester_services')
+    # supplier_services = models.ManyToManyField(Service)
 
     # contacts
     phone = PhoneNumberField(max_length=20, unique=True, blank=False,
@@ -99,12 +89,32 @@ class Participant(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name}, {self.state.upper()}"
 
+    @property
+    def full_name(self):
+        return f"{self.user.first_name} {self.user.last_name}"
+
     class Meta:
         ordering = ['-created']
         indexes = [
             models.Index(fields=['state'], name='state_supplier'),
             models.Index(fields=['phone'], name='phone_supplier'),
         ]
+
+
+class Service(models.Model):
+    provider = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    name = models.CharField(default='Oxygen', choices=SERVICE_CHOICES, max_length=70)
+    payment = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10)
+    delivery = models.BooleanField(default=False, help_text='Do you deliver?')
+    delivery_type = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10, blank=True)
+    delivery_details = models.CharField(blank=True, max_length=200, help_text='More information required for delivery (pricing, restrictions, etc.)')
+    pricing_details = models.CharField(blank=True, max_length=200, help_text="Example: xxx INR per oxygen cylinder.")
+    additional_details = models.CharField(max_length=5000, blank=True)
+    humanVerified = models.BooleanField(default=False)
+    created = models.DateField(auto_now=True)
+
+    def __str__(self):
+        return self.name
 
 
 class VerifiedPhone(models.Model):

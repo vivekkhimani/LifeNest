@@ -22,7 +22,7 @@ class AuthenticationForm(forms.Form):
 class MyUserCreationForm(UserCreationForm):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    email = forms.CharField(required=True)
+    email = forms.CharField(required=True, help_text="Will be required for password reset.")
 
     class Meta:
         model = User
@@ -37,3 +37,16 @@ class ParticipantForm(forms.ModelForm):
         fields = ('state', 'city', 'phone', 'instagramHandle',
                   'facebookHandle', 'website', 'consent')
         exclude = ('verifiedPhone', 'verifiedEmail', 'humanVerified')
+
+
+class ServiceForm(forms.ModelForm):
+    pricing_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False)
+    delivery_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False)
+    additional_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False)
+
+    class Meta:
+        model = Service
+        exclude = ('provider', 'created', 'humanVerified')
+
+
+

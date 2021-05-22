@@ -1,0 +1,48 @@
+{% extends 'covid/base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <section class="align-items-center">
+        <div class="container-fluid">
+            <h2>Add Resource</h2>
+            <form method="post" style="padding-top: 30px">
+                {% csrf_token %}
+                <div class="row form-row" style="margin-top: 20px;">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.name|as_crispy_field }}
+                    </div>
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.payment|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row form-row" style="margin-top: 20px;">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.pricing_details|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row form-row" style="margin-top: 20px;">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.additional_details|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row form-row" style="margin-top: 20px;">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.delivery|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row form-row" style="margin-top: 20px;">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.delivery_type|as_crispy_field }}
+                    </div>
+                </div>
+                <div class="row form-row" style="margin-top: 20px;">
+                    <div class="form-group col-md-6 mb-0">
+                        {{ service.delivery_details|as_crispy_field }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" style="margin-top: 30px">Add Resource</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

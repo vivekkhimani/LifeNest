@@ -8,7 +8,7 @@
             <div class="row" style="margin-top:10px;">
                 <div class="card" style="width: 100%;">
                     <h5 class="card-header bg-light">
-                        COVID Resource List
+                        Find your Resource
                     </h5>
                     <div class="card-body">
                         <div id="resource_list_grid" class="ag-theme-balham" style="width: 100%; height: 80vh;"></div>
@@ -25,7 +25,7 @@
     //basic information about each column
     var columnDefs = [
         {
-            headerName: "Full Name",
+            headerName: "Provider",
             field: "name",
             filter: "agTextColumnFilter",
         },
@@ -34,42 +34,50 @@
             field: "state",
         },
         {
-            headerName: "Services",
-            field: "services",
+            headerName: "City",
+            field: "city",
+        },
+        {
+            headerName: "Service",
+            field: "service",
         },
         {
             headerName: "Phone",
             field: "phone",
         },
         {
-            headerName: "Email",
-            field: "email",
-        },
-        {
             headerName: "Created",
             field: "last_created",
             filter: "agDateColumnFilter",
         },
+        {
+            headerName: "Payment",
+            field: "payment",
+        },
+        {
+            headerName: "Delivery",
+            field: "delivery",
+        },
+        {
+          headerName: "Verified",
+          field: "human_verified",
+        },
+        {
+            headerName: "Details",
+            field: "details",
+            cellRenderer: function (params) {
+                let full_url = "/view_service/" + params.value
+                return '<a href=' + full_url +'>View</a>'
+            }
+        }
     ];
 
+    let rowData = [
+        {% for service in services %}
+            {name: "{{ service.provider.full_name }}", state: "{{ service.provider.state }}", city: "{{ service.provider.city }}", service: "{{ service.name }}", phone: "{{ service.provider.phone }}", last_created: "{{ service.created }}", payment: "{{ service.payment }}", delivery: "{{ service.delivery }}", details: "{{ service.id }}", human_verified: "{{ service.humanVerified }}"},
+        {% endfor %}
+    ];
 
-        var rowData = [
-            {
-                name: 'Vivek Khimani',
-                state: 'Gujarat',
-                last_created: '04072021',
-                services: 'true',
-                phone: '+919998396999',
-                email: 'vivekkhimani07@gmail.com'
-            },
-            {
-                name: 'Vivek Khimani',
-                state: 'Rajasthan',
-                last_created: '04072021',
-                services: 'false',
-                phone: '+919998396999',
-                email: 'vivekkhimani07@gmail.com'
-            }];
 
 
     var gridOptions = {
