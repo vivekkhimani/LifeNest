@@ -70,6 +70,7 @@
 
             {% if logged_in %}
             <nav id="navbar" class="navbar">
+                <span class="navbar-text">Welcome, {{ full_name }}</span>
                 <ul>
                     <li><a class="nav-link scrollto" href="/landing">Home</a></li>
                     <li><a class="nav-link scrollto" href="/add_service">Add Resource</a></li>
@@ -83,8 +84,8 @@
                 <ul>
                     <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
                     <li><a class="nav-link scrollto" href="/#faq">FAQ</a></li>
-                    <li><a class="nav-link scrollto" href="mailto:admin@lifenest.io">Volunteer</a></li>
                     <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
+                    <li><a class="nav-link scrollto" href="mailto:admin@lifenest.io">Volunteer</a></li>
                     <li><a class="nav-link scrollto" href="/login">Sign In</a></li>
                     <li><a class="getstarted scrollto" href="/auth">Sign Up</a></li>
                 </ul>
@@ -213,30 +214,28 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-3 col-md-6 footer-contact">
-                            <h3><strong>LifeNest</strong></h3>
+                            <h3><strong><b>LifeNest</b></strong></h3>
                             <p>
                                 A108 Adam Street <br>
                                 New York, NY 535022<br>
                                 United States <br><br>
-                                <strong>Phone:</strong> +1 5589 55488 55<br>
-                                <strong>Email:</strong> admin@lifenest.io<br>
+                                <strong>Email:</strong> <a href="mailto:admin@lifenest.io" target="_blank">admin@lifenest.io</a><br>
                             </p>
                         </div>
                         <div class="col-lg-5 col-md-6 footer-links">
                             <h4>Useful Links</h4>
                             <ul>
                                 <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="#" target="_blank">Terms of service</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="#" target="_blank">Privacy policy</a></li>
                             </ul>
                         </div>
 
                         <div class="col-lg-4 col-md-6 footer-newsletter">
                             <h4>Connect with us</h4>
                             <div class="social-links">
-                                <a href="https://www.instagram.com/lifenest.io/" class="instagram"><i class="bx bxl-instagram"></i></a>
-                                <a href="mailto:admin@lifenest.io" class="google-plus"><i class="bx bx-envelope"></i></a>
+                                <a href="https://www.instagram.com/lifenest.io/" target="_blank" class="instagram"><i class="bx bxl-instagram"></i></a>
+                                <a href="mailto:admin@lifenest.io" target="_blank" class="google-plus"><i class="bx bx-envelope"></i></a>
                             </div>
                         </div>
                     </div>
@@ -245,7 +244,7 @@
             <div class="container d-md-flex py-4">
                 <div class="me-md-auto text-center text-md-start">
                     <div class="copyright">
-                        &copy; Copyright 2021. All rights reserved by <strong><span><a href="https://www.lifenest.io">LifeNest</a></span></strong>.
+                        &copy; Copyright 2021. All rights reserved by <strong><span><a href="https://www.lifenest.io" target="_blank">LifeNest</a></span></strong>.
                     </div>
                 </div>
                 <div class="credits text-center text-md-right pt-3 pt-md-0">
@@ -253,14 +252,14 @@
                     <!-- You can delete the links only if you purchased the pro version. -->
                     <!-- Licensing information: https://bootstrapmade.com/license/ -->
                     <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/onepage-multipurpose-bootstrap-template/ -->
-                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                        Designed by <a href="https://bootstrapmade.com/" target="_blank">BootstrapMade</a>
                 </div>
             </div>
         </footer><!-- End Footer -->
     {% else %}
         <footer class="page-footer font-small border-top" style="margin-top: 20px; color: gray;">
             <div class="footer-copyright text-center py-3">
-                &copy; Copyright 2021. All Rights Reserved <strong><span><a href="https://www.lifenest.io">LifeNest</a></span></strong>.
+                &copy; Copyright 2021. All Rights Reserved <strong><span><a href="https://www.lifenest.io" target="_blank">LifeNest</a></span></strong>.
             </div>
         </footer>
     {% endif %}

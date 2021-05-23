@@ -40,9 +40,10 @@ class ParticipantForm(forms.ModelForm):
 
 
 class ServiceForm(forms.ModelForm):
-    pricing_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, label="Price Specifications (Only required if the resource is paid)", help_text="Pricer per unit. Example: xxx INR per oxygen cylinder.")
-    delivery_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, label="Delivery Specification (Only required if you avail delivery)", help_text="More information required for delivery (pricing, restrictions, etc.)")
-    additional_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, help_text="Any additional details or restrictions about the availability of your service.")
+    consent = forms.BooleanField(required=True, help_text="I acknowledge that the details entered by me are correct. In case of spam reports against this posting, I am bound to being banned from this platform.")
+    pricing_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, label="Price Specifications (Only required if the resource is paid)", help_text="Price per unit of the resource. Example: ₹x per oxygen cylinder, ₹x per ventilator bed, etc.")
+    delivery_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, label="Delivery Specification (Only required if you provide delivery)", help_text="More information required for delivery (pricing, restrictions, etc.)")
+    additional_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, help_text="Any additional details or restrictions about the resource.")
 
     class Meta:
         model = Service
