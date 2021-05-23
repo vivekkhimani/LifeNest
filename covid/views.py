@@ -1,9 +1,7 @@
 from django.contrib import messages
 from django.db import transaction
-from django.db.models import QuerySet
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from django.core.exceptions import PermissionDenied
 
 from .models import Participant, Service, VerifiedPhone
 from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm, ServiceForm
@@ -36,7 +34,8 @@ def landing_view(request):
 def add_resource(request):
     if request.user.is_authenticated and request.user.is_active:
         if request.method == 'POST':
-            service_form = ServiceForm(request.POST)
+            service_form = ServiceForm(request.POST or None)
+            service_form.fields['price'].label = "Free/Paid?"
 
             if service_form.is_valid():
                 service_instance = service_form.save(commit=False)
@@ -49,7 +48,8 @@ def add_resource(request):
                 messages.error(request, 'There was an error creating the service.')
 
         else:
-            service_form = ServiceForm(request.POST)
+            service_form = ServiceForm(request.POST or None)
+            service_form.fields['price'].label = "Free/Paid?"
         return render(request, 'covid/add_service.html',
                       {'page_name': 'Life Nest | Add Resource', 'service': service_form})
     else:
@@ -68,8 +68,8 @@ def view_resource(request, pk=None):
 @transaction.atomic
 def participant_signup(request):
     if request.method == 'POST':
-        creation_form = MyUserCreationForm(request.POST)
-        participant_form = ParticipantForm(request.POST)
+        creation_form = MyUserCreationForm(request.POST or None)
+        participant_form = ParticipantForm(request.POST or None)
 
         if creation_form.is_valid() and participant_form.is_valid():
             user_instance = creation_form.save()
@@ -82,8 +82,8 @@ def participant_signup(request):
         else:
             messages.error(request, 'There was an error creating the profile because:')
     else:
-        creation_form = MyUserCreationForm(request.POST)
-        participant_form = ParticipantForm(request.POST)
+        creation_form = MyUserCreationForm(request.POST or None)
+        participant_form = ParticipantForm(request.POST or None)
     return render(request, 'covid/signup.html',
                   {'page_name': 'Life Nest | Sign Up', 'creation': creation_form, 'participant': participant_form})
 
@@ -91,7 +91,7 @@ def participant_signup(request):
 @transaction.atomic
 def signin(request):
     if request.method == 'POST':
-        authentication_form = AuthenticationForm(request.POST)
+        authentication_form = AuthenticationForm(request.POST or None)
 
         if authentication_form.is_valid():
             username = authentication_form.cleaned_data.get('username')
@@ -103,7 +103,7 @@ def signin(request):
                 login(request, user)
                 return redirect('landing')
     else:
-        authentication_form = AuthenticationForm(request.POST)
+        authentication_form = AuthenticationForm(request.POST or None)
 
     return render(request, 'covid/login.html',
                   {'page_name': 'Life Nest | Sign In', 'authentication': authentication_form})

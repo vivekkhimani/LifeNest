@@ -22,7 +22,7 @@ class AuthenticationForm(forms.Form):
 class MyUserCreationForm(UserCreationForm):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    email = forms.CharField(required=True, help_text="Will be required for password reset.")
+    email = forms.EmailField(required=True, help_text="Will be required for password reset.")
 
     class Meta:
         model = User
