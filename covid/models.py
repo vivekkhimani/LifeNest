@@ -104,12 +104,12 @@ class Participant(models.Model):
 class Service(models.Model):
     provider = models.ForeignKey(Participant, on_delete=models.CASCADE)
     name = models.CharField(default='Oxygen', choices=SERVICE_CHOICES, max_length=70)
-    payment = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10)
+    price = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10)
     delivery = models.BooleanField(default=False, help_text='Do you deliver?')
-    delivery_type = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10, blank=True)
+    delivery_type = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10, blank=True, help_text="Is your delivery paid or free?")
     delivery_details = models.CharField(blank=True, max_length=200, help_text='More information required for delivery (pricing, restrictions, etc.)')
     pricing_details = models.CharField(blank=True, max_length=200, help_text="Example: xxx INR per oxygen cylinder.")
-    additional_details = models.CharField(max_length=5000, blank=True)
+    additional_details = models.CharField(max_length=5000, blank=True, help_text="Any additional details or restrictions about the availability of your service.")
     humanVerified = models.BooleanField(default=False)
     created = models.DateField(auto_now=True)
 

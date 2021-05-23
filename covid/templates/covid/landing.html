@@ -51,8 +51,8 @@
             filter: "agDateColumnFilter",
         },
         {
-            headerName: "Payment",
-            field: "payment",
+            headerName: "Price",
+            field: "price",
         },
         {
             headerName: "Delivery",
@@ -74,7 +74,7 @@
 
     let rowData = [
         {% for service in services %}
-            {name: "{{ service.provider.full_name }}", state: "{{ service.provider.state }}", city: "{{ service.provider.city }}", service: "{{ service.name }}", phone: "{{ service.provider.phone }}", last_created: "{{ service.created }}", payment: "{{ service.payment }}", delivery: "{{ service.delivery }}", details: "{{ service.id }}", human_verified: "{{ service.humanVerified }}"},
+            {name: "{{ service.provider.full_name }}", state: "{{ service.provider.state }}", city: "{{ service.provider.city }}", service: "{{ service.name }}", phone: "{{ service.provider.phone }}", last_created: "{{ service.created }}", price: "{{ service.price }}", delivery: "{{ service.delivery }}", details: "{{ service.id }}", human_verified: "{{ service.humanVerified }}"},
         {% endfor %}
     ];
 

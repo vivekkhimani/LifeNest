@@ -31,14 +31,14 @@
                     </tr>
                     <tr>
                         <th scope="row">Free/Paid</th>
-                        {% ifequal instance.payment|stringformat:"s" "FREE" %}
-                            <td class="table-success">{{ instance.payment }}</td>
+                        {% ifequal instance.price|stringformat:"s" "FREE" %}
+                            <td class="table-success">{{ instance.price }}</td>
                         {% endifequal %}
-                        {% ifequal instance.payment|stringformat:"s" "PAID" %}
-                            <td class="table-danger">{{ instance.payment }}</td>
+                        {% ifequal instance.price|stringformat:"s" "PAID" %}
+                            <td class="table-danger">{{ instance.price }}</td>
                         {% endifequal %}
                     </tr>
-                    {% ifequal instance.payment|stringformat:"s" "PAID" %}
+                    {% ifequal instance.price|stringformat:"s" "PAID" %}
                         <tr>
                             <th scope="row">Pricing Details</th>
                             <td>{{ instance.pricing_details }}</td>

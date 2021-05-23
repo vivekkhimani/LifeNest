@@ -40,9 +40,9 @@ class ParticipantForm(forms.ModelForm):
 
 
 class ServiceForm(forms.ModelForm):
-    pricing_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False)
-    delivery_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False)
-    additional_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False)
+    pricing_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, label="Price Specifications (Only required if the resource is paid)", help_text="Pricer per unit. Example: xxx INR per oxygen cylinder.")
+    delivery_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, label="Delivery Specification (Only required if you avail delivery)", help_text="More information required for delivery (pricing, restrictions, etc.)")
+    additional_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, help_text="Any additional details or restrictions about the availability of your service.")
 
     class Meta:
         model = Service

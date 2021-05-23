@@ -3,6 +3,14 @@
 <html lang="en">
 <!-- Vivek Khimani -->
     <head>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZP48QNLJVW"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ZP48QNLJVW');
+        </script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -75,7 +83,8 @@
                 <ul>
                     <li><a class="nav-link scrollto" href="/#hero">Home</a></li>
                     <li><a class="nav-link scrollto" href="/#faq">FAQ</a></li>
-                    <li><a class="nav-link scrollto" href="mailto:vivekkhimani07@gmail.com">Volunteer</a></li>
+                    <li><a class="nav-link scrollto" href="mailto:admin@lifenest.io">Volunteer</a></li>
+                    <li><a class="nav-link scrollto" href="/#contact">Contact</a></li>
                     <li><a class="nav-link scrollto" href="/login">Sign In</a></li>
                     <li><a class="getstarted scrollto" href="/auth">Sign Up</a></li>
                 </ul>
@@ -103,7 +112,7 @@
             </div>
 
             <div class="row icon-boxes">
-                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
+                <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="200">
                     <div class="icon-box">
                         <div class="icon"><i class="ri-stack-line"></i></div>
                         <h4 class="title"><a href="">Suppliers</a></h4>
@@ -111,7 +120,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="300">
+                <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="300">
                     <div class="icon-box">
                         <div class="icon"><i class="ri-palette-line"></i></div>
                         <h4 class="title"><a href="">Requesters</a></h4>
@@ -119,19 +128,11 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="400">
+                <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="400">
                     <div class="icon-box">
                         <div class="icon"><i class="ri-command-line"></i></div>
                         <h4 class="title"><a href="">Volunteers</a></h4>
-                        <p class="description">Wanna help us verify the leads? <a href="mailto:vivekkhimani07@gmail.com">Contact us</a> and get access to admin panel!</p>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="500">
-                    <div class="icon-box">
-                        <div class="icon"><i class="ri-fingerprint-line"></i></div>
-                        <h4 class="title"><a href="">Anonymous</a></h4>
-                        <p class="description">Don't disclose your contact online! Our system sends SMS notification without disclosing the contact.</p>
+                        <p class="description">Wanna help us verify the leads? <a href="mailto:admin@lifenest.io">Contact us</a> and get access to admin panel!</p>
                     </div>
                 </div>
             </div>
@@ -144,7 +145,7 @@
 
         <div class="section-title">
           <h2>Frequently Asked Questions</h2>
-            <p> Have questions? You might find an answer here! Can't find all your answers? Feel free to <a href="mailto:vivekkhimani07@gmail.com">contact us.</a></p>
+            <p> Have questions? You might find an answer here! Can't find all your answers? Feel free to <a href="mailto:admin@lifenest.io">contact us.</a></p>
         </div>
 
         <div class="faq-list">
@@ -205,11 +206,70 @@
     {% block script %}
     {% endblock %}
 
-    <footer class="page-footer font-small border-top" style="margin-top: 20px; color: gray;">
-        <div class="footer-copyright text-center py-3">
-            &copy; Copyright <a href="https://vivekkhimani.github.io"><strong><span>Vivek Khimani.</span></strong></a> All Rights Reserved.
-        </div>
-    </footer>
+    <section id="contact"></section>
+    {% if not logged_in %}
+        <footer id="footer">
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 footer-contact">
+                            <h3><strong>LifeNest</strong></h3>
+                            <p>
+                                A108 Adam Street <br>
+                                New York, NY 535022<br>
+                                United States <br><br>
+                                <strong>Phone:</strong> +1 5589 55488 55<br>
+                                <strong>Email:</strong> admin@lifenest.io<br>
+                            </p>
+                        </div>
+                        <div class="col-lg-5 col-md-6 footer-links">
+                            <h4>Useful Links</h4>
+                            <ul>
+                                <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="#">About us</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 footer-newsletter">
+                            <h4>Connect with us</h4>
+                            <div class="social-links">
+                                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                                <a href="#" class="google-plus"><i class="bx bx-envelope"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container d-md-flex py-4">
+                <div class="me-md-auto text-center text-md-start">
+                    <div class="copyright">
+                        &copy; Copyright 2021. All rights reserved by <strong><span><a href="https://www.lifenest.io">LifeNest</a></span></strong>.
+                    </div>
+                </div>
+                <div class="credits text-center text-md-right pt-3 pt-md-0">
+                    <!-- All the links in the footer should remain intact. -->
+                    <!-- You can delete the links only if you purchased the pro version. -->
+                    <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                    <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/onepage-multipurpose-bootstrap-template/ -->
+                        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+                </div>
+            </div>
+        </footer><!-- End Footer -->
+    {% else %}
+        <footer class="page-footer font-small border-top" style="margin-top: 20px; color: gray;">
+            <div class="footer-copyright text-center py-3">
+                &copy; Copyright 2021. All Rights Reserved <strong><span><a href="https://www.lifenest.io">LifeNest</a></span></strong>.
+            </div>
+        </footer>
+    {% endif %}
+
+{#    <footer class="page-footer font-small border-top" style="margin-top: 20px; color: gray;">#}
+{#        <div class="footer-copyright text-center py-3">#}
+{#            Copyright &copy; 2021. All Rights Reserved by <a href="https://vivekkhimani.github.io"><strong><span><b>Vivek Khimani</b>.</span></strong></a>#}
+{#        </div>#}
+{#    </footer>#}
 
     <!-- Vendor JS Files -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
