@@ -2,139 +2,248 @@
 
 {% block content %}
     <section class="align-items-center">
-        <div class="container-fluid">
-            <h3 style="padding-top: 20px;"><b>Resource Details</b></h3>
-            <div class="row container" style="margin-top: 20px;">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col" style="width: 25%">#</th>
-                        <th scope="col" style="width: 75%">Details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">Last Modified</th>
-                        <td>{{ instance.created }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Resource Type</th>
-                        <td>{{ instance.name }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Human Verified</th>
-                        {% if instance.humanVerified %}
-                            <td class="table-success">{{ instance.humanVerified }}</td>
-                        {% else %}
-                            <td class="table-danger">{{ instance.humanVerified }}</td>
+        <div class="container">
+            <div class="main-body">
+
+          <!-- Breadcrumb -->
+          <nav aria-label="breadcrumb" class="main-breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">View Resource</li>
+            </ol>
+          </nav>
+          <!-- /Breadcrumb -->
+
+          <div class="row gutters-sm">
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex flex-column align-items-center text-center">
+{#                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">#}
+                    <div class="mt-3">
+                        <h3><b>Provider Details</b></h3>
+                        <hr>
+                        <p class="text-secondary mb-1">{{ instance.provider.full_name }}</p>
+                        <p class="text-secondary mb-1">{{ instance.provider.phone }}</p>
+                        <p class="text-secondary mb-1">{{ instance.provider.user.email }}</p>
+                        <p class="text-secondary mb-1">{{ instance.provider.city }}, {{ instance.provider.state }}</p>
+                        <hr>
+                        <p class="text-black mb-1" style="padding-bottom: 10px;">Did you find this resource to be authentic?</p>
+                      <button class="btn btn-success">Yes, it helped!</button>
+                      <button class="btn btn-danger">No, it's scam!</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+                {% if instance.provider.instagramHandle  or instance.provider.facebookHandle or instance.provider.website or instance.provider.twitterHandle %}
+                  <div class="card mt-3">
+                    <ul class="list-group list-group-flush">
+                     {% if instance.provider.website %}
+                      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></h6>
+                        <span class="text-secondary"><a href="{{ instance.provider.website }}" target="_blank">{{ instance.provider.website }}</a></span>
+                      </li>
                         {% endif %}
-                    </tr>
-                    <tr>
-                        <th scope="row">Free/Paid</th>
+                    {% if instance.provider.twitterHandle %}
+                      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></h6>
+                        <span class="text-secondary"><a href="{{ instance.provider.twitterHandle }}" target="_blank">View</a></span>
+                      </li>
+                        {% endif %}
+                    {% if instance.provider.instagramHandle %}
+                      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></h6>
+                        <span class="text-secondary"><a href="{{ instance.provider.instagramHandle }}" target="_blank">View</a></span>
+                      </li>
+                        {% endif %}
+                    {% if instance.provider.facebookHandle %}
+                      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></h6>
+                        <span class="text-secondary"><a href="{{ instance.provider.facebookHandle }}" target="_blank">View</a></span>
+                      </li>
+                        {% endif %}
+                    </ul>
+                  </div>
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+              <div class="card mb-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Last Modified</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ instance.created}}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                      <div class="col-sm-3">
+                          <h6 class="mb-0">Resource Type</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                          {{ instance.name }}
+                      </div>
+                  </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Human Verified</h6>
+                        </div>
+                        {% if instance.humanVerified %}
+                            <div class="col-sm-9 text-secondary text-success">
+                                <strong>{{ instance.humanVerified }}</strong>
+                            </div>
+                        {% else %}
+                            <div class="col-sm-9 text-secondary text-danger">
+                                <strong>{{ instance.humanVerified }}</strong>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <h6 class="mb-0">Paid/Free</h6>
+                        </div>
                         {% ifequal instance.price|stringformat:"s" "FREE" %}
-                            <td class="table-success">{{ instance.price }}</td>
+                            <div class="col-sm-9 text-secondary text-success">
+                                <strong>{{instance.price }}</strong>
+                            </div>
                         {% endifequal %}
                         {% ifequal instance.price|stringformat:"s" "PAID" %}
-                            <td class="table-danger">{{ instance.price }}</td>
+                            <div class="col-sm-9 text-secondary text-danger">
+                                <strong>{{ instance.price }}</strong>
+                            </div>
                         {% endifequal %}
-                    </tr>
-                    {% ifequal instance.price|stringformat:"s" "PAID" %}
-                        <tr>
-                            <th scope="row">Pricing Details</th>
-                            <td>{{ instance.pricing_details }}</td>
-                        </tr>
-                    {% endifequal %}
-                    <tr>
-                        <th scope="row">Delivery Available</th>
-                        {% if instance.delivery %}
-                            <td class="table-success">{{ instance.delivery }}</td>
-                        {% else %}
-                            <td class="table-danger">{{ instance.delivery }}</td>
-                        {% endif %}
-                    </tr>
+                        </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Delivery Available</h6>
+                    </div>
                     {% if instance.delivery %}
-                        <tr>
-                            <th scope="row">Resource Type</th>
-                            <td>{{ instance.delivery_type }}</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Delivery Details</th>
-                            <td>{{ instance.delivery_details }}</td>
-                        </tr>
+                        <div class="col-sm-9 text-secondary text-success">
+                            <strong>{{ instance.delivery }}</strong>
+                        </div>
+                        {% else %}
+                        <div class="col-sm-9 text-secondary text-danger">
+                            <strong>{{ instance.delivery }}</strong>
+                        </div>
                     {% endif %}
-                    {% if instance.additional_details %}
-                        <th scope="row">Additional Details</th>
-                        <td>{{ instance.additional_details }}</td>
-                    {% endif %}
-                    </tbody>
-                </table>
+                  </div>
+                  <hr>
+                {% if instance.delivery %}
+                  <div class="row">
+                    <div class="col-sm-3">
+                      <h6 class="mb-0">Delivery Fees</h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                        {{ instance.delivery_type }}
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                      <div class="col-sm-3">
+                          <h6 class="mb-0">Delivery Details</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                          {{ instance.delivery_details }}
+                      </div>
+                  </div>
+                  <hr>
+                {% endif %}
+                    <div class="row">
+                      <div class="col-sm-3">
+                          <h6 class="mb-0">Additional Details</h6>
+                      </div>
+                      <div class="col-sm-9 text-secondary">
+                          {{ instance.additional_details }}
+                      </div>
+                  </div>
+                <hr>
+                <div class="btn-toolbar justify-content-center" role="toolbar" aria-label="button toolbar">
+                    <div class="btn-group" role="group" aria-label="Basic mixed styles example" style="padding: 10px;">
+                        {% if is_owner %}
+                            <a class="btn btn-info " href="/edit_service/{{ instance.id }}">Edit</a>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+                        {% endif %}
+                        <button type="button" class="btn btn-success">Share</button>
+                    </div>
+                </div>
+              </div>
+
+            <!-- MODAL -->
+             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h5 class="modal-title">Delete {{ instance.name }} by {{ instance.provider.full_name }}</h5>
+                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                         </div>
+                         <div class="modal-body">
+                             <p>Are you sure? The action can't be reverted.</p>
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                             <a class="btn btn-danger " href="/delete_service/{{ instance.id }}">Delete</a>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+              </div>
             </div>
-            <h3 style="padding-top: 20px;"><b>Provider Details</b></h3>
-            <div class="row container" style="margin-top: 20px;">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col" style="width: 25%">#</th>
-                        <th scope="col" style="width: 75%">Details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">Provider</th>
-                        <td>{{ instance.provider.full_name }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">State</th>
-                        <td>{{ instance.provider.state }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">City</th>
-                        <td>{{ instance.provider.city }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Phone</th>
-                        <td>{{ instance.provider.phone }}</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Email</th>
-                        <td>{{ instance.provider.user.email }}</td>
-                    </tr>
-                    </tbody>
-                </table>
+          </div>
             </div>
-        {% if instance.provider.instagramHandle  or instance.provider.facebookHandle or instance.provider.website %}
-            <h3 style="padding-top: 20px;"><b>Social Media</b></h3>
-            <div class="row container" style="margin-top: 20px;">
-                <table class="table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col" style="width: 25%">#</th>
-                        <th scope="col" style="width: 75%">Details</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% if instance.provider.instagramHandle %}
-                        <tr>
-                            <th scope="row">Instagram</th>
-                            <td><a href="{{ instance.provider.instagramHandle }}" target="_blank">{{ instance.provider.instagramHandle }}</a></td>
-                        </tr>
-                    {% endif %}
-                    {% if instance.provider.facebookHandle %}
-                        <tr>
-                            <th scope="row">Facebook</th>
-                            <td><a href="{{ instance.provider.facebookHandle }}" target="_blank">{{ instance.provider.facebookHandle }}</a></td>
-                        </tr>
-                    {% endif %}
-                    {% if instance.provider.website %}
-                        <tr>
-                            <th scope="row">Website</th>
-                            <td><a href="{{ instance.provider.website }}" target="_blank">{{ instance.provider.website }}</a></td>
-                        </tr>
-                    {% endif %}
-                    </tbody>
-                </table>
-            </div>
-        {% endif %}
         </div>
     </section>
+
+    <style>
+        body{
+            margin-top:20px;
+            color: #1a202c;
+            text-align: left;
+            background: linear-gradient(45deg, #ba5370, #f4e2d8);
+        }
+        .main-body {
+            padding: 15px;
+        }
+        .card {
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+        }
+
+        .card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            word-wrap: break-word;
+            background-color: #fff;
+            background-clip: border-box;
+            border: 0 solid rgba(0,0,0,.125);
+            border-radius: .25rem;
+        }
+
+        .card-body {
+            flex: 1 1 auto;
+            min-height: 1px;
+            padding: 1rem;
+        }
+
+        .gutters-sm {
+            margin-right: -8px;
+            margin-left: -8px;
+        }
+
+        .gutters-sm>.col, .gutters-sm>[class*=col-] {
+            padding-right: 8px;
+            padding-left: 8px;
+        }
+        .mb-3, .my-3 {
+            margin-bottom: 1rem!important;
+        }
+        .h-100 {
+            height: 100%!important;
+        }
+    </style>
 {% endblock %}

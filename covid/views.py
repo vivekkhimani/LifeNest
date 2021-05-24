@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Participant, Service, VerifiedPhone
@@ -59,8 +59,30 @@ def add_resource(request):
 def view_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         service_instance = Service.objects.get(id=pk)
+        is_owner = False
+        if service_instance.provider.user == request.user:
+            is_owner = True
         return render(request, 'covid/view_service.html',
-                      {'page_name': 'Life Nest | View Resource', 'instance': service_instance})
+                      {'page_name': 'Life Nest | View Resource', 'instance': service_instance, 'is_owner': is_owner})
+    else:
+        return redirect('index')
+
+
+def edit_resource(request, pk=None):
+    if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
+        return redirect('index')
+    else:
+        return redirect('index')
+
+
+def delete_resource(request, pk=None):
+    if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
+        service_instance = Service.objects.get(id=pk)
+        if service_instance.provider.user == request.user:
+            Service.objects.filter(id=pk).delete()
+            return redirect('index')
+        else:
+            return HttpResponse("Denied. You don't own the posting.")
     else:
         return redirect('index')
 
@@ -127,8 +149,4 @@ def signout(request):
 
 
 def delete_data(request):
-    context = {
-        'page_name': 'Helping Hand | Delete'
-    }
-    # fixme: make users inactive. don't actually delete them. (or we can provide both the options).
-    return render(request, 'covid/delete_data.html', context=context)
+    return

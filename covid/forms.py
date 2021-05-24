@@ -30,11 +30,11 @@ class MyUserCreationForm(UserCreationForm):
 
 
 class ParticipantForm(forms.ModelForm):
-    consent = forms.BooleanField(required=True, help_text='I agree to provide the following details.')
+    consent = forms.BooleanField(required=True, help_text="I acknowledge that the details entered by me are correct. In case of spam reports against this posting, I am bound to being banned from this platform.")
 
     class Meta:
         model = Participant
-        fields = ('state', 'city', 'phone', 'instagramHandle',
+        fields = ('state', 'city', 'phone', 'instagramHandle', 'twitterHandle',
                   'facebookHandle', 'website', 'consent')
         exclude = ('verifiedPhone', 'verifiedEmail', 'humanVerified')
 

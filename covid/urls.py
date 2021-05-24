@@ -13,5 +13,7 @@ urlpatterns = [
     path('logout', views.signout, name='logout'),
     path('landing', views.landing_view, name='landing'),
     path('add_service', views.add_resource, name='add_service'),
-    path('view_service/<int:pk>/', views.view_resource, name='view_service')
+    path('view_service/<int:pk>/', views.view_resource, name='view_service'),
+    path('edit_service/<int:pk>/', views.edit_resource, name='edit_service'),
+    path('delete_service/<int:pk>', views.delete_resource, name='delete_service')
 ]

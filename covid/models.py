@@ -76,9 +76,10 @@ class Participant(models.Model):
     # contacts
     phone = PhoneNumberField(max_length=20, unique=True, blank=False,
                              help_text='OTP verification will be required as next step. Format: +919999999999')
-    instagramHandle = models.URLField(max_length=200, blank=True)
-    facebookHandle = models.URLField(max_length=200, blank=True)
-    website = models.URLField(max_length=200, blank=True)
+    instagramHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
+    facebookHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
+    twitterHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
+    website = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
 
     verifiedPhone = models.BooleanField(default=False)
     humanVerified = models.BooleanField(default=False)
