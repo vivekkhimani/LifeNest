@@ -158,7 +158,7 @@
             filter: "agDateColumnFilter",
         },
         {
-            headerName: "Price",
+            headerName: "Paid/Free?",
             field: "price",
         },
         {
@@ -177,7 +177,7 @@
 
     let rowData = [
         {% for service in services %}
-            {name: "{{ service.provider.full_name }}", state: "{{ service.provider.state }}", city: "{{ service.provider.city }}", service: "{{ service.name }}", phone: "{{ service.provider.phone }}", last_created: "{{ service.created }}", price: "{{ service.price }}", details: "{{ service.id }}"},
+            {name: "{{ service.provider.full_name }}", state: "{{ service.provider.state }}", city: "{{ service.provider.city }}", service: "{{ service.name }}", phone: "{{ service.provider.phone }}", last_created: "{{ service.created }}", price: "{{ service.price }}", details: "{{ service.id }}", upvotes: "{{ service.provider.num_helps }}"},
         {% endfor %}
     ];
 

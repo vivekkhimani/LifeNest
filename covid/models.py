@@ -81,6 +81,8 @@ class Participant(models.Model):
     twitterHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
     website = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
 
+    num_scams = models.IntegerField(default=0, blank=False)
+    num_helps = models.IntegerField(default=0, blank=False)
     verifiedPhone = models.BooleanField(default=False)
     verifiedEmail = models.BooleanField(default=False)
     consent = models.BooleanField(blank=False, default=False,
@@ -104,7 +106,7 @@ class Participant(models.Model):
 class Service(models.Model):
     provider = models.ForeignKey(Participant, on_delete=models.CASCADE)
     name = models.CharField(default='Oxygen', choices=SERVICE_CHOICES, max_length=70)
-    price = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10)
+    price = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10, help_text="Is the resource paid or available for free?")
     delivery = models.BooleanField(default=False, help_text='Do you deliver?')
     delivery_type = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10, blank=True, help_text="Is your delivery paid or free?")
     delivery_details = models.CharField(blank=True, max_length=200, help_text='More information required for delivery (pricing, restrictions, etc.)')
@@ -112,6 +114,8 @@ class Service(models.Model):
     additional_details = models.CharField(max_length=5000, blank=True, help_text="Any additional details or restrictions about the availability of your service.")
     consent = models.BooleanField(default=False, help_text="I acknowledge that the details entered by me are correct. In case of spam reports against this posting, I am bound to being banned from this platform.", blank=False)
     created = models.DateField(auto_now=True)
+    scam_votes = models.ManyToManyField(Participant, related_name='scam_votes_participants')
+    help_votes = models.ManyToManyField(Participant, related_name='help_votes_participants')
 
     def __str__(self):
         return self.name

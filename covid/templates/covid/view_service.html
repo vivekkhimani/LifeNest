@@ -47,10 +47,19 @@
 
                         <hr>
                         {% if not is_owner %}
-                            <p class="text-black mb-1" style="padding-bottom: 10px;">Did you find this resource to be authentic?</p>
-                            <button class="btn btn-success">Yes, it helped!</button>
-                            <button class="btn btn-danger">No, it's scam!</button>
-                            <hr>
+                            {% if has_voted_help or has_voted_scam %}
+                                {% if has_voted_scam %}
+                                    <p class="text-danger mb-1">You have already marked this service as spam.<a href="/undo_scam_service/{{ instance.id }}"> Undo?</a></p>
+                                {% endif %}
+                                {% if has_voted_help %}
+                                    <p class="text-success mb-1">You have already marked this service as helpful.<a href="/undo_help_service/{{ instance.id }}"> Undo?</a></p>
+                                {% endif %}
+                            {% else %}
+                                <p class="text-black mb-1" style="padding-bottom: 10px;">Did you find this resource to be authentic?</p>
+                                <a href="/help_service/{{ instance.id }}" class="btn btn-success">Yes, it helped!</a>
+                                <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#scamModal">No, it's scam!</button>
+                                <hr>
+                            {% endif %}
                         {% endif %}
                     </div>
                   </div>
@@ -59,10 +68,10 @@
               <div class="card mt-3">
                 <ul class="list-group list-group-flush">
                   <li class="list-group-item d-flex justify-content-start align-items-center flex-wrap">
-                      <p class="text-success mb-1">55 helpful reports for {{ instance.provider.user.first_name }}.</p>
+                      <p class="text-success mb-1">{{ instance.provider.num_helps }} helpful reports for {{ instance.provider.user.first_name }}.</p>
                   </li>
                   <li class="list-group-item d-flex justify-content-start align-items-center flex-wrap">
-                      <p class="text-danger mb-1">5 scam reports against {{ instance.provider.user.first_name }}.</p>
+                      <p class="text-danger mb-1">{{ instance.provider.num_scams }} scam reports against {{ instance.provider.user.first_name }}.</p>
                   </li>
                 </ul>
               </div>
@@ -165,6 +174,26 @@
                     </div>
                 </div>
               </div>
+
+            <!-- SCAM MODAL -->
+             <div class="modal fade" id="scamModal" tabindex="-1" aria-labelledby="scamModalLabel" aria-hidden="true">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h5 class="modal-title">Mark <b>{{ instance.name }}</b> by <b>{{ instance.provider.full_name }} as scam!</b></h5>
+                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                         </div>
+                         <div class="modal-body">
+                             <p>Are you sure? By clicking this button, you're agreeing to the following:</p>
+                             <p><em>The information I provide here is correct. I am not trying to abuse the provider or platform by any means.</em></p>
+                         </div>
+                         <div class="modal-footer">
+                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                             <a class="btn btn-danger" href="/scam_service/{{ instance.id }}">Mark as Scam!</a>
+                         </div>
+                     </div>
+                 </div>
+             </div>
 
             <!-- DELETION MODAL -->
              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

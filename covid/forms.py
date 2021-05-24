@@ -36,7 +36,7 @@ class ParticipantForm(forms.ModelForm):
         model = Participant
         fields = ('state', 'city', 'phone', 'instagramHandle', 'twitterHandle',
                   'facebookHandle', 'website', 'consent')
-        exclude = ('verifiedPhone', 'verifiedEmail')
+        exclude = ('verifiedPhone', 'verifiedEmail', 'num_scams', 'num_helps')
 
 
 class ServiceForm(forms.ModelForm):
@@ -65,7 +65,7 @@ class ServiceForm(forms.ModelForm):
 
     class Meta:
         model = Service
-        exclude = ('provider', 'created')
+        exclude = ('provider', 'created', 'scam_votes', 'help_votes')
 
 
 

@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db import transaction
-from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Sum
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.http import HttpResponseForbidden
 from django.contrib.auth import authenticate, login, logout
 
@@ -10,12 +11,15 @@ from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm, Serv
 
 # Create your views here.
 def index(request):
+    participants = Participant.objects.all()
     total_services = Service.objects.all().count()
-    total_participants = Participant.objects.all().count()
+    total_participants = participants.count()
+    total_helped = participants.aggregate(Sum('num_helps'))['num_helps__sum']
     context = {
         'page_name': 'Life Nest | Home',
         'total_services': total_services,
         'total_participants': total_participants,
+        'total_helped': total_helped,
     }
     if request.user.is_authenticated and request.user.is_active:
         return redirect('landing')
@@ -63,12 +67,20 @@ def add_resource(request):
 
 def view_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
-        service_instance = Service.objects.get(id=pk)
+        service_instance = Service.objects.prefetch_related('scam_votes', 'help_votes').get(id=pk)
         is_owner = False
         if service_instance.provider.user == request.user:
             is_owner = True
+
+        has_voted_scam, has_voted_help = False, False
+        if service_instance.scam_votes.filter(scam_votes_participants__scam_votes__user=request.user).exists():
+            has_voted_scam = True
+        if service_instance.help_votes.filter(help_votes_participants__help_votes__user=request.user).exists():
+            has_voted_help = True
+
         return render(request, 'covid/view_service.html',
-                      {'page_name': 'Life Nest | View Resource', 'instance': service_instance, 'is_owner': is_owner})
+                      {'page_name': 'Life Nest | View Resource', 'instance': service_instance,
+                       'is_owner': is_owner, 'has_voted_scam': has_voted_scam, 'has_voted_help': has_voted_help})
     else:
         return redirect('index')
 
@@ -82,7 +94,7 @@ def edit_resource(request, pk=None):
         service_form = ServiceForm(request.POST or None, instance=service_instance)
         if request.POST and service_form.is_valid():
             service_form.save()
-            return redirect('index')
+            return redirect(reverse('view_service', args=[pk]))
         else:
             return render(request, 'covid/add_service.html',
                           {'page_name': 'Life Nest | Edit Resource', 'service': service_form})
@@ -97,6 +109,62 @@ def delete_resource(request, pk=None):
             return HttpResponseForbidden()
         Service.objects.filter(id=pk).delete()
         return redirect('index')
+    else:
+        return redirect('index')
+
+
+def scam_resource(request, pk=None):
+    if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
+        curr_participant = Participant.objects.get(user=request.user)
+        service_instance = get_object_or_404(Service, pk=pk)
+        service_instance.scam_votes.add(curr_participant)
+        service_instance.save()
+        provider_instance = service_instance.provider
+        provider_instance.num_scams += 1
+        provider_instance.save()
+        return redirect(reverse('view_service', args=[pk]))
+    else:
+        return redirect('index')
+
+
+def help_resource(request, pk=None):
+    if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
+        curr_participant = Participant.objects.get(user=request.user)
+        service_instance = get_object_or_404(Service, pk=pk)
+        service_instance.help_votes.add(curr_participant)
+        service_instance.save()
+        provider_instance = service_instance.provider
+        provider_instance.num_helps += 1
+        provider_instance.save()
+        return redirect(reverse('view_service', args=[pk]))
+    else:
+        return redirect('index')
+
+
+def undo_scam_resource(request, pk=None):
+    if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
+        curr_participant = Participant.objects.get(user=request.user)
+        service_instance = get_object_or_404(Service, pk=pk)
+        service_instance.scam_votes.remove(curr_participant)
+        service_instance.save()
+        provider_instance = service_instance.provider
+        provider_instance.num_scams -= 1
+        provider_instance.save()
+        return redirect(reverse('view_service', args=[pk]))
+    else:
+        return redirect('index')
+
+
+def undo_help_resource(request, pk=None):
+    if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
+        curr_participant = Participant.objects.get(user=request.user)
+        service_instance = get_object_or_404(Service, pk=pk)
+        service_instance.help_votes.remove(curr_participant)
+        service_instance.save()
+        provider_instance = service_instance.provider
+        provider_instance.num_helps -= 1
+        provider_instance.save()
+        return redirect(reverse('view_service', args=[pk]))
     else:
         return redirect('index')
 
