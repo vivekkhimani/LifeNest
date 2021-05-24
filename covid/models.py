@@ -82,7 +82,6 @@ class Participant(models.Model):
     website = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
 
     verifiedPhone = models.BooleanField(default=False)
-    humanVerified = models.BooleanField(default=False)
     verifiedEmail = models.BooleanField(default=False)
     consent = models.BooleanField(blank=False, default=False,
                                   help_text='I agree to provide the following data to the potential people who might be in need of the services.')
@@ -112,7 +111,6 @@ class Service(models.Model):
     pricing_details = models.CharField(blank=True, max_length=200, help_text="Example: xxx INR per oxygen cylinder.")
     additional_details = models.CharField(max_length=5000, blank=True, help_text="Any additional details or restrictions about the availability of your service.")
     consent = models.BooleanField(default=False, help_text="I acknowledge that the details entered by me are correct. In case of spam reports against this posting, I am bound to being banned from this platform.", blank=False)
-    humanVerified = models.BooleanField(default=False)
     created = models.DateField(auto_now=True)
 
     def __str__(self):

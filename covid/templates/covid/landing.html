@@ -162,12 +162,8 @@
             field: "price",
         },
         {
-            headerName: "Delivery",
-            field: "delivery",
-        },
-        {
-          headerName: "Verified",
-          field: "human_verified",
+          headerName: "Upvotes",
+          field: "upvotes",
         },
         {
             headerName: "Details",
@@ -181,7 +177,7 @@
 
     let rowData = [
         {% for service in services %}
-            {name: "{{ service.provider.full_name }}", state: "{{ service.provider.state }}", city: "{{ service.provider.city }}", service: "{{ service.name }}", phone: "{{ service.provider.phone }}", last_created: "{{ service.created }}", price: "{{ service.price }}", delivery: "{{ service.delivery }}", details: "{{ service.id }}", human_verified: "{{ service.humanVerified }}"},
+            {name: "{{ service.provider.full_name }}", state: "{{ service.provider.state }}", city: "{{ service.provider.city }}", service: "{{ service.name }}", phone: "{{ service.provider.phone }}", last_created: "{{ service.created }}", price: "{{ service.price }}", details: "{{ service.id }}"},
         {% endfor %}
     ];
 

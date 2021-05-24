@@ -90,21 +90,6 @@
                     <hr>
                     <div class="row">
                         <div class="col-sm-3">
-                            <h6 class="mb-0">Human Verified</h6>
-                        </div>
-                        {% if instance.humanVerified %}
-                            <div class="col-sm-9 text-secondary text-success">
-                                <strong>{{ instance.humanVerified }}</strong>
-                            </div>
-                        {% else %}
-                            <div class="col-sm-9 text-secondary text-danger">
-                                <strong>{{ instance.humanVerified }}</strong>
-                            </div>
-                        {% endif %}
-                    </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-sm-3">
                             <h6 class="mb-0">Paid/Free</h6>
                         </div>
                         {% ifequal instance.price|stringformat:"s" "FREE" %}
@@ -139,9 +124,16 @@
                     <div class="col-sm-3">
                       <h6 class="mb-0">Delivery Fees</h6>
                     </div>
-                    <div class="col-sm-9 text-secondary">
-                        {{ instance.delivery_type }}
-                    </div>
+                      {% ifequal instance.price|stringformat:"s" "FREE" %}
+                          <div class="col-sm-9 text-secondary text-success">
+                              <strong>{{instance.delivery_type }}</strong>
+                          </div>
+                      {% endifequal %}
+                      {% ifequal instance.price|stringformat:"s" "PAID" %}
+                          <div class="col-sm-9 text-secondary text-danger">
+                              <strong>{{ instance.delivery_type }}</strong>
+                          </div>
+                      {% endifequal %}
                   </div>
                   <hr>
                   <div class="row">
@@ -169,17 +161,17 @@
                             <a class="btn btn-info " href="/edit_service/{{ instance.id }}">Edit</a>
                             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
                         {% endif %}
-                        <button type="button" class="btn btn-success">Share</button>
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#shareModal">Share</button>
                     </div>
                 </div>
               </div>
 
-            <!-- MODAL -->
+            <!-- DELETION MODAL -->
              <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                  <div class="modal-dialog">
                      <div class="modal-content">
                          <div class="modal-header">
-                             <h5 class="modal-title">Delete {{ instance.name }} by {{ instance.provider.full_name }}</h5>
+                             <h5 class="modal-title">Delete <b>{{ instance.name }}</b> by <b>{{ instance.provider.full_name }}</b></h5>
                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                          </div>
                          <div class="modal-body">
@@ -188,6 +180,31 @@
                          <div class="modal-footer">
                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                              <a class="btn btn-danger " href="/delete_service/{{ instance.id }}">Delete</a>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+
+
+                  <!-- SHARE MODAL -->
+             <div class="modal fade" id="shareModal" tabindex="-1" aria-labelledby="shareModalLabel" aria-hidden="true">
+                 <div class="modal-dialog">
+                     <div class="modal-content">
+                         <div class="modal-header">
+                             <h5 class="modal-title">Share <b>{{ instance.name }}</b> by <b>{{ instance.provider.full_name }}</b></h5>
+                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                         </div>
+                         <div class="modal-body">
+                             <p>Check out the following resource on LifeNest! <b>{{ instance.name }}</b> by <b>{{ instance.provider.full_name }}</b>!</p>
+                             <div class="social-links">
+                                 {% post_to_facebook "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                 {% post_to_twitter "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                 {% post_to_linkedin "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                 {% send_email "{{ instance.name }} on LifeNest!" "Check out the {{ instance.name }} on LifeNest!" object_or_url "Share via email" %}
+                                 {% post_to_reddit "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                 {% post_to_telegram "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                 {% post_to_whatsapp "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                             </div>
                          </div>
                      </div>
                  </div>

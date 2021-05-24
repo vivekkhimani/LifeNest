@@ -10,8 +10,12 @@ from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm, Serv
 
 # Create your views here.
 def index(request):
+    total_services = Service.objects.all().count()
+    total_participants = Participant.objects.all().count()
     context = {
         'page_name': 'Life Nest | Home',
+        'total_services': total_services,
+        'total_participants': total_participants,
     }
     if request.user.is_authenticated and request.user.is_active:
         return redirect('landing')
