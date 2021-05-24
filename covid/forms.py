@@ -45,6 +45,24 @@ class ServiceForm(forms.ModelForm):
     delivery_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, label="Delivery Specification (Only required if you provide delivery)", help_text="More information required for delivery (pricing, restrictions, etc.)")
     additional_details = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=False, help_text="Any additional details or restrictions about the resource.")
 
+    def clean_delivery_type(self):
+        delivery = self.cleaned_data['delivery']
+        if not delivery:
+            return ''
+        return self.cleaned_data['delivery_type']
+
+    def clean_delivery_details(self):
+        delivery = self.cleaned_data['delivery']
+        if not delivery:
+            return ''
+        return self.cleaned_data['delivery_details']
+
+    def clean_pricing_details(self):
+        price = self.cleaned_data['price']
+        if price == 'FREE':
+            return ''
+        return self.cleaned_data['pricing_details']
+
     class Meta:
         model = Service
         exclude = ('provider', 'created', 'humanVerified')

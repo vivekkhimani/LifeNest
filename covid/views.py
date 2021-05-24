@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db import transaction
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseForbidden
 from django.contrib.auth import authenticate, login, logout
 
 from .models import Participant, Service, VerifiedPhone
@@ -68,21 +69,30 @@ def view_resource(request, pk=None):
         return redirect('index')
 
 
+@transaction.atomic()
 def edit_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
-        return redirect('index')
+        service_instance = get_object_or_404(Service, pk=pk)
+        if service_instance.provider.user != request.user:
+            return HttpResponseForbidden()
+        service_form = ServiceForm(request.POST or None, instance=service_instance)
+        if request.POST and service_form.is_valid():
+            service_form.save()
+            return redirect('index')
+        else:
+            return render(request, 'covid/add_service.html',
+                          {'page_name': 'Life Nest | Edit Resource', 'service': service_form})
     else:
         return redirect('index')
 
 
 def delete_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
-        service_instance = Service.objects.get(id=pk)
-        if service_instance.provider.user == request.user:
-            Service.objects.filter(id=pk).delete()
-            return redirect('index')
-        else:
-            return HttpResponse("Denied. You don't own the posting.")
+        service_instance = get_object_or_404(Service, pk=pk)
+        if service_instance.provider.user != request.user:
+            return HttpResponseForbidden()
+        Service.objects.filter(id=pk).delete()
+        return redirect('index')
     else:
         return redirect('index')
 

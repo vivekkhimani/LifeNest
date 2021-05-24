@@ -28,9 +28,14 @@
                         <p class="text-secondary mb-1">{{ instance.provider.user.email }}</p>
                         <p class="text-secondary mb-1">{{ instance.provider.city }}, {{ instance.provider.state }}</p>
                         <hr>
-                        <p class="text-black mb-1" style="padding-bottom: 10px;">Did you find this resource to be authentic?</p>
-                      <button class="btn btn-success">Yes, it helped!</button>
-                      <button class="btn btn-danger">No, it's scam!</button>
+                        {% if not is_owner %}
+                            <p class="text-black mb-1" style="padding-bottom: 10px;">Did you find this resource to be authentic?</p>
+                            <button class="btn btn-success">Yes, it helped!</button>
+                            <button class="btn btn-danger">No, it's scam!</button>
+                            <hr>
+                        {% endif %}
+                        <p class="text-success mb-1">55 people found {{ instance.provider.user.first_name }}'s resources helpful.</p>
+                        <p class="text-danger mb-1">5 scam reports against {{ instance.provider.user.first_name }}.</p>
                     </div>
                   </div>
                 </div>
