@@ -1,4 +1,5 @@
 {% extends 'covid/base.html' %}
+{% load social_share %}
 
 {% block content %}
     <section class="align-items-center">
@@ -25,8 +26,25 @@
                         <hr>
                         <p class="text-secondary mb-1">{{ instance.provider.full_name }}</p>
                         <p class="text-secondary mb-1">{{ instance.provider.phone }}</p>
-                        <p class="text-secondary mb-1">{{ instance.provider.user.email }}</p>
+                        <p class="text-secondary mb-1"><a href="mailto:{{ instance.provider.user.email }}" target="_blank">{{ instance.provider.user.email }}</a></p>
                         <p class="text-secondary mb-1">{{ instance.provider.city }}, {{ instance.provider.state }}</p>
+                        {% if instance.provider.instagramHandle  or instance.provider.facebookHandle or instance.provider.website or instance.provider.twitterHandle %}
+                            <div class="social-links">
+                            {% if instance.provider.website %}
+                                <a href="{{ instance.provider.website }}" target="_blank" class="bx-sm"><i class="bx bxl-internet-explorer"></i></a>
+                            {% endif %}
+                            {% if instance.provider.twitterHandle %}
+                                <a href="{{ instance.provider.instagramHandle }}" target="_blank" class="bx-sm"><i class="bx bxl-twitter"></i></a>
+                            {% endif %}
+                            {% if instance.provider.instagramHandle %}
+                                <a href="{{ instance.provider.instagramHandle }}" target="_blank" class="bx-sm"><i class="bx bxl-instagram"></i></a>
+                            {% endif %}
+                            {% if instance.provider.facebookHandle %}
+                                <a href="{{ instance.provider.facebookHandle }}" target="_blank" class="bx-sm"><i class="bx bxl-facebook"></i></a>
+                            {% endif %}
+                            </div>
+                        {% endif %}
+
                         <hr>
                         {% if not is_owner %}
                             <p class="text-black mb-1" style="padding-bottom: 10px;">Did you find this resource to be authentic?</p>
@@ -34,42 +52,20 @@
                             <button class="btn btn-danger">No, it's scam!</button>
                             <hr>
                         {% endif %}
-                        <p class="text-success mb-1">55 people found {{ instance.provider.user.first_name }}'s resources helpful.</p>
-                        <p class="text-danger mb-1">5 scam reports against {{ instance.provider.user.first_name }}.</p>
                     </div>
                   </div>
                 </div>
               </div>
-                {% if instance.provider.instagramHandle  or instance.provider.facebookHandle or instance.provider.website or instance.provider.twitterHandle %}
-                  <div class="card mt-3">
-                    <ul class="list-group list-group-flush">
-                     {% if instance.provider.website %}
-                      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></h6>
-                        <span class="text-secondary"><a href="{{ instance.provider.website }}" target="_blank">{{ instance.provider.website }}</a></span>
-                      </li>
-                        {% endif %}
-                    {% if instance.provider.twitterHandle %}
-                      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter mr-2 icon-inline text-info"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></h6>
-                        <span class="text-secondary"><a href="{{ instance.provider.twitterHandle }}" target="_blank">View</a></span>
-                      </li>
-                        {% endif %}
-                    {% if instance.provider.instagramHandle %}
-                      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></h6>
-                        <span class="text-secondary"><a href="{{ instance.provider.instagramHandle }}" target="_blank">View</a></span>
-                      </li>
-                        {% endif %}
-                    {% if instance.provider.facebookHandle %}
-                      <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook mr-2 icon-inline text-primary"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></h6>
-                        <span class="text-secondary"><a href="{{ instance.provider.facebookHandle }}" target="_blank">View</a></span>
-                      </li>
-                        {% endif %}
-                    </ul>
-                  </div>
-                {% endif %}
+              <div class="card mt-3">
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item d-flex justify-content-start align-items-center flex-wrap">
+                      <p class="text-success mb-1">55 helpful reports for {{ instance.provider.user.first_name }}.</p>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-start align-items-center flex-wrap">
+                      <p class="text-danger mb-1">5 scam reports against {{ instance.provider.user.first_name }}.</p>
+                  </li>
+                </ul>
+              </div>
             </div>
             <div class="col-md-8">
               <div class="card mb-3">
