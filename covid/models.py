@@ -75,7 +75,7 @@ class Participant(models.Model):
 
     # contacts
     phone = PhoneNumberField(max_length=20, unique=True, blank=False,
-                             help_text='OTP verification will be required as next step. Format: +919999999999')
+                             help_text='You cannot change this later. OTP verification will be required as next step. Format: +919999999999')
     instagramHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
     facebookHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
     twitterHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
@@ -83,6 +83,8 @@ class Participant(models.Model):
 
     num_scams = models.IntegerField(default=0, blank=False)
     num_helps = models.IntegerField(default=0, blank=False)
+    spam_reports_given = models.IntegerField(default=0, blank=False)  # refers to caller spams
+    spam_reports_received = models.IntegerField(default=0, blank=False) # refers to caller spams
     verifiedPhone = models.BooleanField(default=False)
     verifiedEmail = models.BooleanField(default=False)
     consent = models.BooleanField(blank=False, default=False,
@@ -103,16 +105,35 @@ class Participant(models.Model):
         ]
 
 
+class Spammer(models.Model):
+    reporter = models.ForeignKey(Participant, on_delete=models.CASCADE)
+    phone = PhoneNumberField(max_length=20, unique=False, blank=False, help_text="The spam report will not be registered if you have already filed a report for the same contact before.")
+    reason = models.CharField(blank=False, max_length=500,
+                              help_text="Please explain the reason for marking this number as spam.")
+    date_reported = models.DateField(auto_now=True)
+    consent = models.BooleanField(blank=False, default=False, help_text="I confirm that the information entered by me is correct and not trying to mislead other members on this platform in any manner.")
+
+    class Meta:
+        unique_together = ['reporter', 'phone']
+        ordering = ('-date_reported',)
+
+
 class Service(models.Model):
     provider = models.ForeignKey(Participant, on_delete=models.CASCADE)
     name = models.CharField(default='Oxygen', choices=SERVICE_CHOICES, max_length=70)
-    price = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10, help_text="Is the resource paid or available for free?")
+    price = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10,
+                             help_text="Is the resource paid or available for free?")
     delivery = models.BooleanField(default=False, help_text='Do you deliver?')
-    delivery_type = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10, blank=True, help_text="Is your delivery paid or free?")
-    delivery_details = models.CharField(blank=True, max_length=200, help_text='More information required for delivery (pricing, restrictions, etc.)')
+    delivery_type = models.CharField(default='PAID', choices=PAYMENT_CHOICES, max_length=10, blank=True,
+                                     help_text="Is your delivery paid or free?")
+    delivery_details = models.CharField(blank=True, max_length=200,
+                                        help_text='More information required for delivery (pricing, restrictions, etc.)')
     pricing_details = models.CharField(blank=True, max_length=200, help_text="Example: xxx INR per oxygen cylinder.")
-    additional_details = models.CharField(max_length=5000, blank=True, help_text="Any additional details or restrictions about the availability of your service.")
-    consent = models.BooleanField(default=False, help_text="I acknowledge that the details entered by me are correct. In case of spam reports against this posting, I am bound to being banned from this platform.", blank=False)
+    additional_details = models.CharField(max_length=5000, blank=True,
+                                          help_text="Any additional details or restrictions about the availability of your service.")
+    consent = models.BooleanField(default=False,
+                                  help_text="I acknowledge that the details entered by me are correct. In case of spam reports against this posting, I am bound to being banned from this platform.",
+                                  blank=False)
     created = models.DateField(auto_now=True)
     scam_votes = models.ManyToManyField(Participant, related_name='scam_votes_participants')
     help_votes = models.ManyToManyField(Participant, related_name='help_votes_participants')
