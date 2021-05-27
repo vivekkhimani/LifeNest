@@ -57,6 +57,18 @@
         ======================================================== -->
     </head>
     <body>
+    {% if messages %}
+        <div class="alert alert-info">
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                        {{ message }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+{% endif %}
     {% block nav %}
     <header id="header" class="fixed-top">
         <div class="container d-flex align-items-center justify-content-between">
@@ -238,8 +250,8 @@
             </li>
 
             <li data-aos="fade-up" data-aos-delay="300">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">What if a provider uploads fake resources? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-3" class="collapsed">What if a provider uploads fake resources? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-3" class="collapse" data-bs-parent=".faq-list">
                 <p>
                   LifeNest is built with a purpose of making COVID-related resources more accessible. As a result, we can't currently stop anyone from creating a posting. However, the users can mark a resource as spam. Our team will actively monitor for the postings with high spam counts and trace the provider.
                 </p>
@@ -247,8 +259,8 @@
             </li>
 
             <li data-aos="fade-up" data-aos-delay="400">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">How is LifeNest different from other platforms? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">How is LifeNest different from other platforms? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
                 <p>
                   LifeNest aims for easy sharing of the COVID-related resources in India. Currently, there are a lot of resources/services for COVID patients in India, but it's hard to find one, as it's spread across multiple platforms. Moreover, people are afraid of being scammed while approaching the unknown people. LifeNest aims to solve all such problems, by allowing people to add resources, organizing it into a database, and only allowing verified users to access the database. Most importantly, the verified users can report spam resources on the platform which allows others to estimate the reputation of the provider.
                 </p>
@@ -265,8 +277,8 @@
             </li>
 
               <li data-aos="fade-up" data-aos-delay="400">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">How can I contribute? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
-              <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-6" class="collapsed">How can I contribute? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-6" class="collapse" data-bs-parent=".faq-list">
                 <p>
                   The best way to contribute is to sign up! Even if you don't have access to resources or don't need one, you can always sign up and browse/share the resources. That's the best way to help someone who is in need of it. Moreover, you can apply to become a volunteer and help us keep the data clean. Lastly, if you are a Django developer, you can reach out to us and help us keep the platform running. We plan to open-source this project in the near future.
                 </p>

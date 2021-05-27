@@ -1,6 +1,14 @@
 from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from . import views
+
+password_reset_patterns = [
+    path('password_reset/', auth_views.PasswordResetView.as_view(), name='password_reset'),
+    path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(), name='password_reset_done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
+    path('reset/done/', auth_views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+]
 
 authpatterns = [
     path('auth', views.participant_signup, name='auth'),
@@ -26,4 +34,4 @@ urlpatterns = [
     path('help_service/<int:pk>', views.help_resource, name='help_service'),
     path('undo_scam_service/<int:pk>', views.undo_scam_resource, name='undo_scam_resource'),
     path('undo_help_service/<int:pk>', views.undo_help_resource, name='undo_help_service'),
-] + authpatterns
+] + authpatterns + password_reset_patterns

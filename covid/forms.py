@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from covid.models import Participant, Service, Spammer
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 
 
 class AuthenticationForm(forms.Form):

@@ -1,9 +1,10 @@
 from django.contrib import messages
 from django.db import transaction
 from django.db.models import Sum, Count
-from django.shortcuts import render, redirect, get_object_or_404, reverse, HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.http import HttpResponseForbidden
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.views.decorators.debug import sensitive_variables, sensitive_post_parameters
 from django.utils.safestring import SafeString
 
@@ -268,9 +269,11 @@ def report_spam_landing(request):
     if request.user.is_authenticated and request.user.is_active:
         unique_phones_list = Spammer.objects.values_list('phone', flat=True).distinct()
         unique_spammers_list = manual_field_distinct_patch(unique_phones_list)
-        phone_count = generate_count_dict(Spammer.objects.values('phone').order_by('-date_reported').annotate(count=Count('phone')))
+        phone_count = generate_count_dict(
+            Spammer.objects.values('phone').order_by('-date_reported').annotate(count=Count('phone')))
         return render(request, 'covid/report_spam_landing.html',
-                      {'page_name': 'Life Nest | Report Spam', 'spam': unique_spammers_list, 'count': SafeString(phone_count)})
+                      {'page_name': 'Life Nest | Report Spam', 'spam': unique_spammers_list,
+                       'count': SafeString(phone_count)})
     else:
         return redirect('index')
 
@@ -287,7 +290,9 @@ def expand_spam(request, pk=None):
 
         already_reported = Spammer.objects.filter(reporter=reporter_instance, phone=phone_instance).exists()
         all_reports = Spammer.objects.filter(phone=phone_instance).all()
-        return render(request, 'covid/view_spam.html', {'page_name': 'Life Nest | View Spam', 'reports': all_reports, 'in_records': in_records, 'spammer': spammer_info, 'already_reported': already_reported, 'spam_id': pk})
+        return render(request, 'covid/view_spam.html',
+                      {'page_name': 'Life Nest | View Spam', 'reports': all_reports, 'in_records': in_records,
+                       'spammer': spammer_info, 'already_reported': already_reported, 'spam_id': pk})
     else:
         return redirect('index')
 
@@ -349,9 +354,30 @@ def undo_spam_upvote(request, pk=None):
         return redirect('index')
 
 
+@transaction.atomic
+@sensitive_post_parameters()
+@sensitive_variables()
 def update_password(request):
-    # fixme: need to implement
-    return redirect('index')
+    if request.user.is_authenticated and request.user.is_active:
+        if request.method == 'POST':
+            password_change_form = PasswordChangeForm(request.user, request.POST or None)
+
+            if password_change_form.is_valid():
+                participant_instance = Participant.objects.get(user=request.user)
+                user = password_change_form.save()
+                participant_instance.user = user
+                participant_instance.save()
+                update_session_auth_hash(request, user)
+                messages.success(request, 'Your password was successfully changed.')
+                return redirect('landing')
+            else:
+                messages.error(request, 'Error updating your password.')
+        else:
+            password_change_form = PasswordChangeForm(request.user, request.POST or None)
+        return render(request, 'auth/change_password.html',
+                      {'page_name': 'Life Nest | Password Change', 'password_change': password_change_form})
+    else:
+        return redirect('index')
 
 
 def signout(request):
