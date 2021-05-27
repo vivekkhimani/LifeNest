@@ -1,7 +1,7 @@
 """
 Use the default and few overrides for PROD.
 """
-from default import *
+from .default import *
 import re
 
 DEBUG = False
