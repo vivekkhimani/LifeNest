@@ -18,7 +18,7 @@
         <meta content="One-stop solution for finding COVID-related leads in India." name="description">
         <meta content="covid,resources,india,oxygen,ventilator,icu,critical,help,hospitals,beds,contact,sources,link" name="keywords">
         <meta content="Vivek Khimani" name="author">
-        <meta content="Welcome - Helping Hand" property="og:title">
+        <meta content="Welcome - Life Nest" property="og:title">
         <meta content="One-stop solution for finding COVID-related leads in India." property="og:description">
         <meta content="{% static 'img/apple-touch-icon.png' %}" property="og:image">
 
@@ -83,8 +83,8 @@
 
             {% if logged_in %}
             <nav id="navbar" class="navbar">
-                <span class="navbar-text">Welcome, {{ full_name }}</span>
                 <ul>
+                    <li><span class="nav-link text-lg-left"><b>Hello {{ first_name }}</b></span></li>
                     <li><a class="nav-link scrollto" href="/landing">Home</a></li>
                     <li><a class="nav-link scrollto" href="/add_service">Add Resource</a></li>
                     <li><a class="nav-link scrollto" href="/edit_profile">Edit Profile</a></li>
@@ -146,8 +146,8 @@
                 <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0" data-aos="zoom-in" data-aos-delay="400">
                     <div class="icon-box">
                         <div class="icon"><i class="ri-command-line"></i></div>
-                        <h4 class="title"><a href="">Developers</a></h4>
-                        <p class="description">Proficient at Django? Wanna help us keep the platform running? <a href="#contact">Contact us</a> now.</p>
+                        <h4 class="title"><a href="">Decentralized Scam Reports</a></h4>
+                        <p class="description">Report a supplier/caller and see if other users feel the same about them.</p>
                     </div>
                 </div>
             </div>
@@ -258,27 +258,36 @@
               </div>
             </li>
 
-            <li data-aos="fade-up" data-aos-delay="400">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">How is LifeNest different from other platforms? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <li data-aos="fade-up" data-aos-delay="300">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-4" class="collapsed">What if I start receiving the spam calls after creating a resource posing? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
               <div id="faq-list-4" class="collapse" data-bs-parent=".faq-list">
                 <p>
-                  LifeNest aims for easy sharing of the COVID-related resources in India. Currently, there are a lot of resources/services for COVID patients in India, but it's hard to find one, as it's spread across multiple platforms. Moreover, people are afraid of being scammed while approaching the unknown people. LifeNest aims to solve all such problems, by allowing people to add resources, organizing it into a database, and only allowing verified users to access the database. Most importantly, the verified users can report spam resources on the platform which allows others to estimate the reputation of the provider.
+                  We certainly acknowledge that providers can be bugged by spam callers too. As a result, we have provided a section - "Report Spam", where the providers can mark a callers as spam. The section also provides a database which the providers can access to see if the same caller has been marked as spam by other people.
                 </p>
               </div>
             </li>
 
-              <li data-aos="fade-up" data-aos-delay="400">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">Can LifeNest protect me from scammers? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+            <li data-aos="fade-up" data-aos-delay="400">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-5" class="collapsed">How is LifeNest different from other platforms? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
               <div id="faq-list-5" class="collapse" data-bs-parent=".faq-list">
                 <p>
-                  LifeNest only allows for easy sharing of the COVID-related leads. It doesn't guarantee the authenticity of the provider or protection of the user in any way. LifeNest is also not responsible for any financial transactions made outside the platform. LifeNest allows you to flag the spam providers, but we don't provide any claims or benefits.
+                  LifeNest aims for easy sharing of the COVID-related resources in India. Currently, there are a lot of resources/services for COVID patients in India, but it's hard to find one, as they're spread across multiple platforms. Moreover, people are afraid of being scammed/spammed while approaching the unknown people. LifeNest aims to solve all these problems, by allowing people to add resources, organizing it into a database, and only allowing verified users to access the database. Most importantly, the verified users can report spam resources/callers on the platform which allows others to estimate the reputation of the provider or a caller.
                 </p>
               </div>
             </li>
 
               <li data-aos="fade-up" data-aos-delay="400">
-              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-6" class="collapsed">How can I contribute? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-6" class="collapsed">Can LifeNest protect me from scammers? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
               <div id="faq-list-6" class="collapse" data-bs-parent=".faq-list">
+                <p>
+                  LifeNest only allows for easy sharing of the COVID-related leads. It doesn't guarantee the authenticity of the provider or protection of the user in any way. LifeNest is also not responsible for any financial transactions made outside the platform. LifeNest allows you to flag the scammers, but we don't provide any claims to protect against those. We will try our best to promptly react to the scam reports and keep out platform clean.
+                </p>
+              </div>
+            </li>
+
+              <li data-aos="fade-up" data-aos-delay="400">
+              <i class="bx bx-help-circle icon-help"></i> <a data-bs-toggle="collapse" data-bs-target="#faq-list-7" class="collapsed">How can I contribute? <i class="bx bx-chevron-down icon-show"></i><i class="bx bx-chevron-up icon-close"></i></a>
+              <div id="faq-list-7" class="collapse" data-bs-parent=".faq-list">
                 <p>
                   The best way to contribute is to sign up! Even if you don't have access to resources or don't need one, you can always sign up and browse/share the resources. That's the best way to help someone who is in need of it. Moreover, you can apply to become a volunteer and help us keep the data clean. Lastly, if you are a Django developer, you can reach out to us and help us keep the platform running. We plan to open-source this project in the near future.
                 </p>

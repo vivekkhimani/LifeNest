@@ -171,22 +171,33 @@
         animateRows: true,
         floatingFilter: true,
         defaultColDef: {
-            flex: 1,
             filter: true,
             sortable: true,
             resizable: true,
         },
         columnDefs: columnDefs,
         rowData: rowData,
-        onFirstDataRendered: onFirstDataRendered
+        onFirstDataRendered: onFirstDataRenderedDesktop
     }
 
-    function onFirstDataRendered(params) {
+    function onFirstDataRenderedDesktop(params) {
         params.api.sizeColumnsToFit();
+    }
+
+    function onFirstDataRenderedMobile(params) {
+        params.columnApi.autoSizeAllColumns();
     }
 
     document.addEventListener('DOMContentLoaded', function() {
         var eGridDiv = document.querySelector('#resource_list_grid');
+
+        if (window.innerWidth <= 770) {
+            // mobile
+            gridOptions.onFirstDataRendered = onFirstDataRenderedMobile
+        } else {
+            // dekstop
+            gridOptions.onFirstDataRendered = onFirstDataRenderedDesktop
+        }
         new agGrid.Grid(eGridDiv, gridOptions);
     })
     </script>
