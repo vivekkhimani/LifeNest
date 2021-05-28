@@ -38,3 +38,25 @@ IGNORABLE_404_URLS = [
 ]
 
 SERVER_EMAIL = 'errors@lifenest.io'
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+# logging
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
+
+# secret key
+SECRET_KEY = "1878hs^z_nw)y6&2k4t0&**7c*li6k6j#ux_=uhz2t!)qj0=gp"
+

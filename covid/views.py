@@ -12,6 +12,10 @@ from .models import Participant, Service, VerifiedPhone, Spammer
 from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm, ServiceForm, UpdateParticipantForm, \
     UpdateUserForm, SpammerForm
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 # Create your views here.
 def index(request):
@@ -59,6 +63,7 @@ def add_resource(request):
                 return redirect('landing')
             else:
                 messages.error(request, 'There was an error creating the service.')
+                logger.info("service form invalidated.")
 
         else:
             service_form = ServiceForm(request.POST or None)
@@ -191,6 +196,7 @@ def participant_signup(request):
             return redirect('landing')
         else:
             messages.error(request, 'There was an error creating the profile because:')
+            logger.info("signup form invalidated.")
     else:
         creation_form = MyUserCreationForm(request.POST or None)
         participant_form = ParticipantForm(request.POST or None)
@@ -389,4 +395,5 @@ def delete_data(request):
     if request.user.is_authenticated and request.user.is_active:
         Participant.objects.get(user=request.user).delete()
         logout(request)
+        logger.warning("An account was deleted by the user himself.")
     return redirect('index')
