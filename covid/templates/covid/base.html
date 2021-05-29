@@ -28,6 +28,10 @@
         <link rel="apple-touch-icon" type="image/x-icon" href='{% static 'img/favicon.png' %}' />
         <link rel="apple-touch-startup-image" type="image/x-icon" href='{% static 'img/favicon.png' %}' />
 
+        <!-- FIREBASE -->
+        <script src="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.js"></script>
+        <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.8.0/firebase-ui-auth.css" />
+
         <!-- Google Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
 
@@ -75,11 +79,13 @@
 
             <!-- <h1 class="logo"><a href="/">Helping Hand</a></h1> -->
             <!-- Uncomment below if you prefer to use an image logo -->
-            <!-- <a href="/" class="logo"><img src="{% static 'img/favicon.png' %}" alt="logo" class="img-fluid">Helping Hand</a> -->
-            <a class="navbar-brand" href="/">
-                <img src='{% static 'img/favicon.png' %}' width="30" height="30" class="d-inline-block align-top" alt="logo"/>
-                Life Nest
-            </a>
+{#            <a href="/" class="logo"><img src='{% static 'img/favicon.png' %}' width="50px" height="120px" alt="logo" class="img-fluid"></a>#}
+                <a href="/" class="navbar-brand">
+                    <!-- Logo Image -->
+                    <img src='{% static 'img/favicon.png' %}' width="60" height="60" alt="logo" class="d-inline-block align-middle mr-2">
+                    <!-- Logo Text -->
+{#                    <span class="text-uppercase font-weight-bold">Life Nest</span>#}
+                </a>
 
             {% if logged_in %}
             <nav id="navbar" class="navbar">
@@ -371,7 +377,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-3 col-md-6 footer-contact">
-                            <h3><strong><b>LifeNest</b></strong></h3>
+                            <h3><strong><b>Life Nest</b></strong></h3>
                             <p>
 {#                                A108 Adam Street <br>#}
 {#                                New York, NY 535022<br>#}
@@ -383,8 +389,8 @@
                             <h4>Useful Links</h4>
                             <ul>
                                 <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#" target="_blank">Terms of service</a></li>
-                                <li><i class="bx bx-chevron-right"></i> <a href="#" target="_blank">Privacy policy</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="https://portal.termshub.io/lifenest.io/" target="_blank">Terms of service</a></li>
+                                <li><i class="bx bx-chevron-right"></i> <a href="https://portal.termshub.io/lifenest.io/" target="_blank">Privacy policy</a></li>
                             </ul>
                         </div>
 
@@ -401,7 +407,7 @@
             <div class="container d-md-flex py-4">
                 <div class="me-md-auto text-center text-md-start">
                     <div class="copyright">
-                        &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.lifenest.io" target="_blank">LifeNest</a></span></strong>.
+                        &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.lifenest.io" target="_blank">Life Nest</a></span></strong>.
                     </div>
                 </div>
                 <div class="credits text-center text-md-right pt-3 pt-md-0">
@@ -416,7 +422,7 @@
     {% else %}
         <footer class="page-footer font-small border-top" style="margin-top: 20px; color: black;">
             <div class="footer-copyright text-center py-3">
-                &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.lifenest.io" target="_blank" style="color: black;"><u>LifeNest</u></a></span></strong>.
+                &copy; Copyright 2021. All Rights Reserved by <strong><span><a href="https://www.lifenest.io" target="_blank" style="color: black;"><u>Life Nest</u></a></span></strong>.
             </div>
         </footer>
     {% endif %}

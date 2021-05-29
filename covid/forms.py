@@ -56,6 +56,24 @@ class UpdateParticipantForm(forms.ModelForm):
         exclude = ('verifiedPhone', 'verifiedEmail', 'num_scams', 'num_helps', 'phone', 'consent')
 
 
+class UpdatePhoneForm(forms.ModelForm):
+    class Meta:
+        model = Participant
+        fields = ('phone',)
+
+    def __init__(self, *args, **kwargs):
+        self.participant = kwargs.pop('participant', None)
+        super(UpdatePhoneForm, self).__init__(*args, **kwargs)
+
+    def clean_phone(self):
+        get_phone = self.cleaned_data.get('phone', None)
+        if not get_phone:
+            return get_phone
+        if str(self.participant.phone) == str(get_phone):
+            raise forms.ValidationError("You are already using this phone number.")
+        return get_phone
+
+
 class SpammerForm(forms.ModelForm):
     reason = forms.CharField(widget=forms.Textarea(attrs={'rows': 5, 'cols': 40}), required=True,
                              help_text="Reason for reporting this phone as spam. Your spam entry may be removed if the reason is not satisfactory.")
@@ -71,7 +89,8 @@ class SpammerForm(forms.ModelForm):
         if not get_phone:
             return cleaned_data
         if Spammer.objects.filter(reporter=self.reporter, phone=get_phone).exists():
-            raise forms.ValidationError({"phone": 'You have already reported a spam against this number. Cannot do it again.'})
+            raise forms.ValidationError(
+                {"phone": 'You have already reported a spam against this number. Cannot do it again.'})
         return cleaned_data
 
     class Meta:

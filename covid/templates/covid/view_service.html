@@ -226,13 +226,13 @@
                          <div class="modal-body">
                              <p>Check out the following resource on LifeNest! <b>{{ instance.name }}</b> by <b>{{ instance.provider.full_name }}</b>!</p>
                              <div class="social-links">
-                                 {% post_to_facebook "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                 {% post_to_facebook object_or_url "Post to Facebook" %}
                                  {% post_to_twitter "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
-                                 {% post_to_linkedin "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                 {% post_to_linkedin object_or_url %}
                                  {% send_email "{{ instance.name }} on LifeNest!" "Check out the {{ instance.name }} on LifeNest!" object_or_url "Share via email" %}
                                  {% post_to_reddit "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
                                  {% post_to_telegram "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
-                                 {% post_to_whatsapp "Check out the {{ instance.name }} on LifeNest!" object_or_url %}
+                                 {% post_to_whatsapp object_or_url %}
                              </div>
                          </div>
                      </div>

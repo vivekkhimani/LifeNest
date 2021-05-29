@@ -8,13 +8,16 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.views.decorators.debug import sensitive_variables, sensitive_post_parameters
 from django.utils.safestring import SafeString
 
-from .models import Participant, Service, VerifiedPhone, Spammer
+from .firebase_auth import phone_auth_initialize, find_user, delete_user
+from .decorators import phone_number_verified
+from .models import Participant, Service, Spammer
 from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm, ServiceForm, UpdateParticipantForm, \
-    UpdateUserForm, SpammerForm
+    UpdateUserForm, SpammerForm, UpdatePhoneForm
 
 import logging
 
 logger = logging.getLogger(__name__)
+phone_auth_initialize()
 
 
 # Create your views here.
@@ -35,6 +38,7 @@ def index(request):
         return render(request, 'covid/base.html', context=context)
 
 
+@phone_number_verified
 def landing_view(request):
     if request.user.is_authenticated and request.user.is_active:
         services = Service.objects.all()
@@ -48,6 +52,7 @@ def landing_view(request):
 
 
 @transaction.atomic
+@phone_number_verified
 def add_resource(request):
     if request.user.is_authenticated and request.user.is_active:
         if request.method == 'POST':
@@ -74,6 +79,7 @@ def add_resource(request):
         return redirect('index')
 
 
+@phone_number_verified
 def view_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         service_instance = Service.objects.prefetch_related('scam_votes', 'help_votes').get(id=pk)
@@ -95,6 +101,7 @@ def view_resource(request, pk=None):
 
 
 @transaction.atomic()
+@phone_number_verified
 def edit_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         service_instance = get_object_or_404(Service, pk=pk)
@@ -111,6 +118,7 @@ def edit_resource(request, pk=None):
         return redirect('index')
 
 
+@phone_number_verified
 def delete_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         service_instance = get_object_or_404(Service, pk=pk)
@@ -122,6 +130,7 @@ def delete_resource(request, pk=None):
         return redirect('index')
 
 
+@phone_number_verified
 def scam_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         curr_participant = Participant.objects.get(user=request.user)
@@ -136,6 +145,7 @@ def scam_resource(request, pk=None):
         return redirect('index')
 
 
+@phone_number_verified
 def help_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         curr_participant = Participant.objects.get(user=request.user)
@@ -150,6 +160,7 @@ def help_resource(request, pk=None):
         return redirect('index')
 
 
+@phone_number_verified
 def undo_scam_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         curr_participant = Participant.objects.get(user=request.user)
@@ -164,6 +175,7 @@ def undo_scam_resource(request, pk=None):
         return redirect('index')
 
 
+@phone_number_verified
 def undo_help_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         curr_participant = Participant.objects.get(user=request.user)
@@ -182,6 +194,9 @@ def undo_help_resource(request, pk=None):
 @sensitive_post_parameters()
 @transaction.atomic
 def participant_signup(request):
+    if request.user.is_authenticated and request.user.is_active:
+        return redirect('index')
+
     if request.method == 'POST':
         creation_form = MyUserCreationForm(request.POST or None)
         participant_form = ParticipantForm(request.POST or None)
@@ -208,6 +223,9 @@ def participant_signup(request):
 @sensitive_post_parameters()
 @sensitive_variables('username', 'password', 'user')
 def signin(request):
+    if request.user.is_authenticated and request.user.is_active:
+        return redirect('index')
+
     if request.method == 'POST':
         authentication_form = AuthenticationForm(request.POST or None)
 
@@ -271,6 +289,7 @@ def generate_count_dict(annotation):
     return return_dict
 
 
+@phone_number_verified
 def report_spam_landing(request):
     if request.user.is_authenticated and request.user.is_active:
         unique_phones_list = Spammer.objects.values_list('phone', flat=True).distinct()
@@ -284,6 +303,7 @@ def report_spam_landing(request):
         return redirect('index')
 
 
+@phone_number_verified
 def expand_spam(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         reporter_instance = Participant.objects.get(user=request.user)
@@ -305,6 +325,7 @@ def expand_spam(request, pk=None):
 
 @transaction.atomic
 @sensitive_post_parameters()
+@phone_number_verified
 def add_new_spam(request):
     if request.user.is_authenticated and request.user.is_active:
         spam_reporter = Participant.objects.get(user=request.user)
@@ -338,6 +359,7 @@ def add_new_spam(request):
         return redirect('index')
 
 
+@phone_number_verified
 def undo_spam_upvote(request, pk=None):
     if request.user.is_authenticated and request.user.is_active:
         curr_spammer_instance = get_object_or_404(Spammer, pk=pk)
@@ -397,3 +419,50 @@ def delete_data(request):
         logout(request)
         logger.warning("An account was deleted by the user himself.")
     return redirect('index')
+
+
+def render_phone_auth_view(request):
+    if request.user.is_authenticated and request.user.is_active:
+        participant_instance = Participant.objects.get(user=request.user)
+        if not participant_instance.verifiedPhone:
+            return render(request, 'covid/phone_auth_view.html', {'page_name': 'Life Nest | Phone Verification'})
+        else:
+            return redirect('index')
+    else:
+        return redirect('index')
+
+
+def confirm_phone_auth_view(request):
+    if request.user.is_authenticated and request.user.is_active:
+        participant_instance = Participant.objects.get(user=request.user)
+        if not participant_instance.verifiedPhone:
+            phone = participant_instance.phone
+            if find_user(str(phone)):
+                participant_instance.verifiedPhone = True
+                participant_instance.save()
+            return redirect('index')
+        else:
+            return redirect('index')
+    else:
+        return redirect('index')
+
+
+@transaction.atomic
+def change_phone_view(request):
+    if request.user.is_authenticated and request.user.is_active:
+        participant_instance = Participant.objects.get(user=request.user)
+        phone = participant_instance.phone
+        form = UpdatePhoneForm(request.POST or None, instance=participant_instance, participant=participant_instance)
+        if request.POST and form.is_valid():
+            if find_user(str(phone)):
+                delete_user(str(phone))
+            new_phone = form.cleaned_data.get('phone')
+            participant_instance.phone = new_phone
+            participant_instance.verifiedPhone = False
+            participant_instance.save()
+            return redirect('index')
+        else:
+            return render(request, 'covid/update_phone_view.html',
+                          {'page_name': 'Life Nest | Update Phone', 'form': form})
+    else:
+        return redirect('index')

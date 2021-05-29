@@ -157,8 +157,6 @@
         }
     ];
 
-    console.log("{{ count }}");
-
     let rowData = [
         {% for report in spam %}
             {phone: "{{ report.phone }}", last_reported: "{{ report.date_reported }}", upvotes: "{{ count|get_item:report.phone }}", details: "{{ report.id }}"},
@@ -196,6 +194,9 @@
             gridOptions.onFirstDataRendered = onFirstDataRenderedMobile
         } else {
             // dekstop
+            let tempColDef = gridOptions.defaultColDef;
+            tempColDef['flex'] = 1;
+            gridOptions.defaultColDef = tempColDef;
             gridOptions.onFirstDataRendered = onFirstDataRenderedDesktop
         }
         new agGrid.Grid(eGridDiv, gridOptions);
