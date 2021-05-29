@@ -7,6 +7,7 @@
     <section class="align-items-center">
         <div class="wrapper rounded bg-white">
             <div class="h3">Update Phone</div>
+            {% if can_access %}
             <form class="form" method="post">
                 {% csrf_token %}
                 <div class="row">
@@ -16,8 +17,10 @@
                 </div>
                 <button class="btn btn-primary mt-3" type="submit">Update</button>
             </form>
-            <p class="text-left text-danger" style="padding-top: 20px;"><b>DISCLAIMER: The action can't be reverted. Once you click "update", our records will reflect your new number and you will be required to verify the new phone number.</b></p>
-
+            <p class="text-left text-danger" style="padding-top: 20px;"><b>DISCLAIMER: The action can't be reverted. You are only allowed one phone number change a day.</b></p>
+            {% else %}
+                <p class="text-center text-danger" style="padding-top: 20px;"><b>You are only allowed one phone number change a day. {{ hours_remaining }} hours remaining.</b></p>
+            {% endif %}
         </div>
     </section>
 

@@ -4,6 +4,7 @@ from django.db.models import Sum, Count
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.http import HttpResponseForbidden
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.views.decorators.debug import sensitive_variables, sensitive_post_parameters
 from django.utils.safestring import SafeString
@@ -14,6 +15,7 @@ from .models import Participant, Service, Spammer
 from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm, ServiceForm, UpdateParticipantForm, \
     UpdateUserForm, SpammerForm, UpdatePhoneForm
 
+from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -38,7 +40,7 @@ def index(request):
         return render(request, 'covid/base.html', context=context)
 
 
-@phone_number_verified
+@login_required
 def landing_view(request):
     if request.user.is_authenticated and request.user.is_active:
         services = Service.objects.all()
@@ -53,6 +55,7 @@ def landing_view(request):
 
 @transaction.atomic
 @phone_number_verified
+@login_required
 def add_resource(request):
     if request.user.is_authenticated and request.user.is_active:
         if request.method == 'POST':
@@ -79,7 +82,7 @@ def add_resource(request):
         return redirect('index')
 
 
-@phone_number_verified
+@login_required
 def view_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         service_instance = Service.objects.prefetch_related('scam_votes', 'help_votes').get(id=pk)
@@ -102,6 +105,7 @@ def view_resource(request, pk=None):
 
 @transaction.atomic()
 @phone_number_verified
+@login_required
 def edit_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         service_instance = get_object_or_404(Service, pk=pk)
@@ -119,6 +123,7 @@ def edit_resource(request, pk=None):
 
 
 @phone_number_verified
+@login_required
 def delete_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         service_instance = get_object_or_404(Service, pk=pk)
@@ -130,7 +135,7 @@ def delete_resource(request, pk=None):
         return redirect('index')
 
 
-@phone_number_verified
+@login_required
 def scam_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         curr_participant = Participant.objects.get(user=request.user)
@@ -145,7 +150,7 @@ def scam_resource(request, pk=None):
         return redirect('index')
 
 
-@phone_number_verified
+@login_required
 def help_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         curr_participant = Participant.objects.get(user=request.user)
@@ -160,7 +165,7 @@ def help_resource(request, pk=None):
         return redirect('index')
 
 
-@phone_number_verified
+@login_required
 def undo_scam_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         curr_participant = Participant.objects.get(user=request.user)
@@ -175,7 +180,7 @@ def undo_scam_resource(request, pk=None):
         return redirect('index')
 
 
-@phone_number_verified
+@login_required
 def undo_help_resource(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         curr_participant = Participant.objects.get(user=request.user)
@@ -247,6 +252,7 @@ def signin(request):
 
 @transaction.atomic
 @sensitive_post_parameters()
+@login_required
 def update_profile(request):
     if request.user.is_authenticated and request.user.is_active:
         participant_instance = get_object_or_404(Participant, user=request.user)
@@ -290,6 +296,7 @@ def generate_count_dict(annotation):
 
 
 @phone_number_verified
+@login_required
 def report_spam_landing(request):
     if request.user.is_authenticated and request.user.is_active:
         unique_phones_list = Spammer.objects.values_list('phone', flat=True).distinct()
@@ -304,6 +311,7 @@ def report_spam_landing(request):
 
 
 @phone_number_verified
+@login_required
 def expand_spam(request, pk=None):
     if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
         reporter_instance = Participant.objects.get(user=request.user)
@@ -326,6 +334,7 @@ def expand_spam(request, pk=None):
 @transaction.atomic
 @sensitive_post_parameters()
 @phone_number_verified
+@login_required
 def add_new_spam(request):
     if request.user.is_authenticated and request.user.is_active:
         spam_reporter = Participant.objects.get(user=request.user)
@@ -360,6 +369,7 @@ def add_new_spam(request):
 
 
 @phone_number_verified
+@login_required
 def undo_spam_upvote(request, pk=None):
     if request.user.is_authenticated and request.user.is_active:
         curr_spammer_instance = get_object_or_404(Spammer, pk=pk)
@@ -385,6 +395,7 @@ def undo_spam_upvote(request, pk=None):
 @transaction.atomic
 @sensitive_post_parameters()
 @sensitive_variables()
+@login_required
 def update_password(request):
     if request.user.is_authenticated and request.user.is_active:
         if request.method == 'POST':
@@ -408,11 +419,13 @@ def update_password(request):
         return redirect('index')
 
 
+@login_required
 def signout(request):
     logout(request)
     return redirect('index')
 
 
+@login_required
 def delete_data(request):
     if request.user.is_authenticated and request.user.is_active:
         Participant.objects.get(user=request.user).delete()
@@ -421,6 +434,7 @@ def delete_data(request):
     return redirect('index')
 
 
+@login_required
 def render_phone_auth_view(request):
     if request.user.is_authenticated and request.user.is_active:
         participant_instance = Participant.objects.get(user=request.user)
@@ -432,6 +446,7 @@ def render_phone_auth_view(request):
         return redirect('index')
 
 
+@login_required
 def confirm_phone_auth_view(request):
     if request.user.is_authenticated and request.user.is_active:
         participant_instance = Participant.objects.get(user=request.user)
@@ -448,21 +463,37 @@ def confirm_phone_auth_view(request):
 
 
 @transaction.atomic
+@login_required
 def change_phone_view(request):
     if request.user.is_authenticated and request.user.is_active:
-        participant_instance = Participant.objects.get(user=request.user)
-        phone = participant_instance.phone
-        form = UpdatePhoneForm(request.POST or None, instance=participant_instance, participant=participant_instance)
-        if request.POST and form.is_valid():
-            if find_user(str(phone)):
-                delete_user(str(phone))
-            new_phone = form.cleaned_data.get('phone')
-            participant_instance.phone = new_phone
-            participant_instance.verifiedPhone = False
-            participant_instance.save()
-            return redirect('index')
+        last_access = request.session.get('last_access', None)
+        can_access = True
+        delta = 0
+        if last_access:
+            delta = (datetime.now() - datetime.strptime(last_access, "%m/%d/%Y, %H:%M:%S")).days
+
+        if last_access is None or delta > 1:
+            participant_instance = Participant.objects.get(user=request.user)
+            phone = participant_instance.phone
+            form = UpdatePhoneForm(request.POST or None, instance=participant_instance, participant=participant_instance)
+            if request.POST and form.is_valid():
+                if find_user(str(phone)):
+                    delete_user(str(phone))
+                new_phone = form.cleaned_data.get('phone')
+                participant_instance.phone = new_phone
+                participant_instance.verifiedPhone = False
+                participant_instance.save()
+                request.session['last_access'] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+                return redirect('render_phone_auth')
+            else:
+                return render(request, 'covid/update_phone_view.html',
+                              {'page_name': 'Life Nest | Update Phone', 'form': form, 'can_access': can_access})
         else:
+            can_access = False
+            delta = (datetime.now() - datetime.strptime(last_access, "%m/%d/%Y, %H:%M:%S")).days
+            hours_remaining = 24 - round(delta/24)
             return render(request, 'covid/update_phone_view.html',
-                          {'page_name': 'Life Nest | Update Phone', 'form': form})
+                          {'page_name': 'Life Nest | Update Phone', 'form': None, 'can_access': can_access, 'hours_remaining': hours_remaining})
+
     else:
         return redirect('index')
