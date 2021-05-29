@@ -45,20 +45,6 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-md-3 mb-0">
-                            {{ participant.instagramHandle|as_crispy_field}}
-                        </div>
-                        <div class="form-group col-md-3 mb-0">
-                            {{ participant.facebookHandle|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-3 mb-0">
-                            {{ participant.twitterHandle|as_crispy_field }}
-                        </div>
-                        <div class="form-group col-md-3 mb-0">
-                            {{ participant.website|as_crispy_field }}
-                        </div>
-                    </div>
-                    <div class="row">
                         {{ participant.consent|as_crispy_field }}
                     </div>
                     <button class="btn btn-primary mt-3" type="submit">Sign Up</button>

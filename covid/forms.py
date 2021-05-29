@@ -44,9 +44,9 @@ class ParticipantForm(forms.ModelForm):
 
     class Meta:
         model = Participant
-        fields = ('state', 'city', 'phone', 'instagramHandle', 'twitterHandle',
-                  'facebookHandle', 'website', 'consent')
-        exclude = ('verifiedPhone', 'verifiedEmail', 'num_scams', 'num_helps')
+        fields = ('state', 'city', 'phone', 'consent')
+        exclude = ('verifiedPhone', 'verifiedEmail', 'num_scams', 'num_helps', 'instagramHandle', 'twitterHandle',
+                   'facebookHandle', 'website',)
 
 
 class UpdateParticipantForm(forms.ModelForm):
