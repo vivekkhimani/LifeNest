@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.views.decorators.debug import sensitive_variables, sensitive_post_parameters
 from django.utils.safestring import SafeString
+from django.utils import timezone
 
 from .firebase_auth import phone_auth_initialize, find_user, delete_user
 from .decorators import phone_number_verified
@@ -15,7 +16,6 @@ from .models import Participant, Service, Spammer
 from .forms import ParticipantForm, MyUserCreationForm, AuthenticationForm, ServiceForm, UpdateParticipantForm, \
     UpdateUserForm, SpammerForm, UpdatePhoneForm
 
-from datetime import datetime
 import logging
 
 logger = logging.getLogger(__name__)
@@ -263,7 +263,7 @@ def update_profile(request):
             participant_instance = participant_update_form.save(commit=False)
             participant_instance.user = user_instance
             participant_instance.save()
-            return redirect('view_profile')
+            return redirect('index')
         else:
             return render(request, 'covid/edit_profile.html',
                           {'page_name': 'Life Nest | Edit Profile', 'participant': participant_update_form,
@@ -466,14 +466,14 @@ def confirm_phone_auth_view(request):
 @login_required
 def change_phone_view(request):
     if request.user.is_authenticated and request.user.is_active:
-        last_access = request.session.get('last_access', None)
-        can_access = True
-        delta = 0
-        if last_access:
-            delta = (datetime.now() - datetime.strptime(last_access, "%m/%d/%Y, %H:%M:%S")).days
+        yesterday = timezone.now() - timezone.timedelta(days=1)
+        if Participant.objects.filter(user=request.user, lastPhoneUpdate__gt=yesterday).exists():
+            can_access = False
+        else:
+            can_access = True
 
-        if last_access is None or delta > 1:
-            participant_instance = Participant.objects.get(user=request.user)
+        participant_instance = Participant.objects.get(user=request.user)
+        if can_access:
             phone = participant_instance.phone
             form = UpdatePhoneForm(request.POST or None, instance=participant_instance, participant=participant_instance)
             if request.POST and form.is_valid():
@@ -482,18 +482,17 @@ def change_phone_view(request):
                 new_phone = form.cleaned_data.get('phone')
                 participant_instance.phone = new_phone
                 participant_instance.verifiedPhone = False
+                participant_instance.lastPhoneUpdate = timezone.now()
                 participant_instance.save()
-                request.session['last_access'] = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
                 return redirect('render_phone_auth')
             else:
                 return render(request, 'covid/update_phone_view.html',
                               {'page_name': 'Life Nest | Update Phone', 'form': form, 'can_access': can_access})
         else:
-            can_access = False
-            delta = (datetime.now() - datetime.strptime(last_access, "%m/%d/%Y, %H:%M:%S")).days
-            hours_remaining = 24 - round(delta/24)
+            last_update = participant_instance.lastPhoneUpdate
+            delta = last_update - yesterday
             return render(request, 'covid/update_phone_view.html',
-                          {'page_name': 'Life Nest | Update Phone', 'form': None, 'can_access': can_access, 'hours_remaining': hours_remaining})
+                          {'page_name': 'Life Nest | Update Phone', 'form': None, 'can_access': can_access, 'hours_remaining': delta.seconds//3600})
 
     else:
         return redirect('index')

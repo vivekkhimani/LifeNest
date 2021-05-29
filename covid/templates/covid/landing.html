@@ -3,8 +3,15 @@
 {%  load static %}
 
 {%  block content %}
-    <section class="align-items-center">
+    <section class="align-items-center" style="margin-top: 20px;">
         <div class="wrapper rounded bg-white">
+            {% if not verified_phone %}
+                <div class="alert alert-danger">
+                    <ul>
+                        <li><b>Unverified Phone:&nbsp;</b>You'll have a limited access. <a href="{% url 'render_phone_auth' %}">Verify it now.</a></li>
+                    </ul>
+                </div>
+            {% endif %}
             <div class="h3">Find Your Resource</div>
             <p class="text-secondary"><i>Scroll the grid horizontally on mobile screens</i></p>
             <div class="form">

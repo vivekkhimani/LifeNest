@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from covid.models import Participant, Service, Spammer
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 
 class AuthenticationForm(forms.Form):
@@ -29,7 +29,7 @@ class MyUserCreationForm(UserCreationForm):
         fields = ('username', 'password1', 'password2', 'first_name', 'last_name', 'email')
 
 
-class UpdateUserForm(UserCreationForm):
+class UpdateUserForm(UserChangeForm):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
 

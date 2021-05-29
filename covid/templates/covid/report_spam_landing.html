@@ -4,10 +4,10 @@
 {% load define_actions %}
 
 {%  block content %}
-    <section class="align-items-center">
+    <section class="align-items-center" style="margin-top: 20px;">
         <div class="wrapper rounded bg-white">
             <div class="h3">Report Spam Calls</div>
-            <p class="text-black-50" style="padding-top: 20px;">Are you a supplier? Do you suspect spam call inquiries for your postings? You can <a href="/new_spam">report it here.</a></p>
+            <p class="text-black-50" style="padding-top: 20px;">Are you a supplier? Do you suspect spam call inquiries for your postings? You can <a href="{% url 'new_spam' %}">report it here.</a></p>
             <p class="text-black-50">You can check the database below to see if your suspected spam callers have been reported by other people too. View the details to read about other spam experiences.</p>
             <div class="form">
                 <div id="resource_list_grid" class="ag-theme-alpine" style="width: 100%; height: 100vh;"></div>

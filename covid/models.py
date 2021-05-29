@@ -6,7 +6,8 @@ models.py
 """
 from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
-from django.contrib.auth.models import User, UserManager
+from django.contrib.auth.models import User
+from django.utils import timezone
 
 STATE_CHOICES = [
     ('Andhra Pradesh', 'Andhra Pradesh'),
@@ -76,6 +77,7 @@ class Participant(models.Model):
     # contacts
     phone = PhoneNumberField(max_length=20, unique=True, blank=False,
                              help_text='OTP verification will be required to create postings. Format: +919999999999')
+    lastPhoneUpdate = models.DateTimeField(default=timezone.now, blank=False)
     instagramHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
     facebookHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")
     twitterHandle = models.URLField(max_length=200, blank=True, help_text="Valid URL expected.")

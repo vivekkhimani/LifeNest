@@ -3,9 +3,20 @@
 {% load crispy_forms_tags %}
 {%  load static %}
 
+{% block header %}
+    <link rel="stylesheet" href='{% static 'css/auth_forms_style.css' %}' />
+{% endblock %}
+
 {% block content %}
-    <section class="align-items-center">
+    <section class="align-items-center" style="margin-top: 20px;">
         <div class="wrapper rounded bg-white">
+            {% if not verified_phone %}
+                <div class="alert alert-danger">
+                    <ul>
+                        <li><b>Unverified Phone:&nbsp;</b>You'll have a limited access. <a href="{% url 'render_phone_auth' %}">Verify it now.</a></li>
+                    </ul>
+                </div>
+            {% endif %}
             <div class="h3">Edit Profile</div>
                 <form class="form" method="post">
                     {% csrf_token %}
@@ -42,10 +53,10 @@
                     <button class="btn btn-primary mt-3" type="submit">Update Profile</button>
                 </form>
             <div class="text-left" style="padding-top: 10px">
-                    <p>Need a new password? <a href="/change_password">Change password.</a></p>
+                    <p>Need a new password? <a href="{% url 'change_password' %}">Change password.</a></p>
             </div>
             <div class="text-left">
-                <p>New phone number? <a href="/change_phone">Change it now.</a></p>
+                <p>New phone number? <a href="{% url 'change_phone' %}">Change it now.</a></p>
             </div>
             <div class="text-left">
                 <p>Want to erase your data? <a data-bs-toggle="modal" data-bs-target="#deleteModal" href="#deleteModal">Delete your account.</a></p>
@@ -66,132 +77,11 @@
                          </div>
                          <div class="modal-footer">
                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                             <a class="btn btn-danger" href="/delete_user">Delete</a>
+                             <a class="btn btn-danger" href="{% url 'delete_user' %}">Delete</a>
                          </div>
                      </div>
                  </div>
              </div>
     </section>
-
-    <style>
-     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
-
-     * {
-         margin: 0;
-         padding: 0;
-         box-sizing: border-box;
-         font-family: 'Poppins', sans-serif
-     }
-
-     body {
-         background: linear-gradient(45deg, #ba5370, #f4e2d8);
-         min-height: 100vh
-     }
-
-     body::-webkit-scrollbar {
-         display: none
-     }
-
-     .wrapper {
-         max-width: 800px;
-         margin: 80px auto;
-         padding: 30px 45px;
-         box-shadow: 5px 25px 35px #3535356b
-     }
-
-     .wrapper label {
-         display: block;
-         padding-bottom: 0.2rem
-     }
-
-     .wrapper .form .row {
-         padding: 0.6rem 0
-     }
-
-     .wrapper .form .row .form-control {
-         box-shadow: none
-     }
-
-     .wrapper .form .option {
-         position: relative;
-         padding-left: 20px;
-         cursor: pointer
-     }
-
-     .wrapper .form .option input {
-         opacity: 0
-     }
-
-     .wrapper .form .checkmark {
-         position: absolute;
-         top: 1px;
-         left: 0;
-         height: 20px;
-         width: 20px;
-         border: 1px solid #bbb;
-         border-radius: 50%
-     }
-
-     .wrapper .form .option input:checked~.checkmark:after {
-         display: block
-     }
-
-     .wrapper .form .option:hover .checkmark {
-         background: #f3f3f3
-     }
-
-     .wrapper .form .option .checkmark:after {
-         content: "";
-         width: 10px;
-         height: 10px;
-         display: block;
-         background: linear-gradient(45deg, #ba5370, #f4e2d8);
-         position: absolute;
-         top: 50%;
-         left: 50%;
-         border-radius: 50%;
-         transform: translate(-50%, -50%) scale(0);
-         transition: 300ms ease-in-out 0s
-     }
-
-     .wrapper .form .option input[type="radio"]:checked~.checkmark {
-         background: #fff;
-         transition: 300ms ease-in-out 0s
-     }
-
-     .wrapper .form .option input[type="radio"]:checked~.checkmark:after {
-         transform: translate(-50%, -50%) scale(1)
-     }
-
-     #sub {
-         display: block;
-         width: 100%;
-         border: 1px solid #ddd;
-         padding: 10px;
-         border-radius: 5px;
-         color: #333
-     }
-
-     #sub:focus {
-         outline: none
-     }
-
-     @media(max-width: 768.5px) {
-         .wrapper {
-             margin: 30px
-         }
-
-         .wrapper .form .row {
-             padding: 0
-         }
-     }
-
-     @media(max-width: 400px) {
-         .wrapper {
-             padding: 25px;
-             margin: 20px
-         }
-     }
-        </style>
 {% endblock %}
 
