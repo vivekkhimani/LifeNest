@@ -137,8 +137,8 @@ class Service(models.Model):
                                   help_text="I acknowledge that the details entered by me are correct. In case of spam reports against this posting, I am bound to being banned from this platform.",
                                   blank=False)
     created = models.DateField(auto_now=True)
-    scam_votes = models.ManyToManyField(Participant, related_name='scam_votes_participants')
-    help_votes = models.ManyToManyField(Participant, related_name='help_votes_participants')
+    scam_votes = models.ManyToManyField(Participant, related_name='scam_votes_participants', blank=True)
+    help_votes = models.ManyToManyField(Participant, related_name='help_votes_participants', blank=True)
 
     def __str__(self):
         return self.name
