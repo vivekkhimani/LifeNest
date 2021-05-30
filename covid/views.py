@@ -4,6 +4,7 @@ from django.db.models import Sum, Count
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.http import HttpResponseForbidden
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.views.decorators.debug import sensitive_variables, sensitive_post_parameters
@@ -40,17 +41,13 @@ def index(request):
         return render(request, 'covid/base.html', context=context)
 
 
-@login_required
 def landing_view(request):
-    if request.user.is_authenticated and request.user.is_active:
-        services = Service.objects.all()
-        context = {
-            'page_name': 'Life Nest | Welcome',
-            'services': services
-        }
-        return render(request, 'covid/landing.html', context=context)
-    else:
-        return redirect('index')
+    services = Service.objects.all()
+    context = {
+        'page_name': 'Life Nest | Welcome',
+        'services': services
+    }
+    return render(request, 'covid/landing.html', context=context)
 
 
 @transaction.atomic
@@ -82,10 +79,13 @@ def add_resource(request):
         return redirect('index')
 
 
-@login_required
 def view_resource(request, pk=None):
-    if request.user.is_authenticated and request.user.is_active and isinstance(pk, int):
+    if isinstance(pk, int):
         service_instance = Service.objects.prefetch_related('scam_votes', 'help_votes').get(id=pk)
+    else:
+        return redirect('index')
+
+    if request.user.is_authenticated and request.user.is_active:
         is_owner = False
         if service_instance.provider.user == request.user:
             is_owner = True
@@ -99,8 +99,10 @@ def view_resource(request, pk=None):
         return render(request, 'covid/view_service.html',
                       {'page_name': 'Life Nest | View Resource', 'instance': service_instance,
                        'is_owner': is_owner, 'has_voted_scam': has_voted_scam, 'has_voted_help': has_voted_help})
+
     else:
-        return redirect('index')
+        return render(request, 'covid/view_service.html',
+                      {'page_name': 'Life Nest | View Resource', 'instance': service_instance})
 
 
 @transaction.atomic()
@@ -220,6 +222,7 @@ def participant_signup(request):
     else:
         creation_form = MyUserCreationForm(request.POST or None)
         participant_form = ParticipantForm(request.POST or None)
+        print(participant_form.fields)
     return render(request, 'auth/signup.html',
                   {'page_name': 'Life Nest | Sign Up', 'creation': creation_form, 'participant': participant_form})
 
@@ -428,7 +431,7 @@ def signout(request):
 @login_required
 def delete_data(request):
     if request.user.is_authenticated and request.user.is_active:
-        Participant.objects.get(user=request.user).delete()
+        User.objects.get(username=request.user.get_username()).delete()
         logout(request)
         logger.warning("An account was deleted by the user himself.")
     return redirect('index')
@@ -439,7 +442,8 @@ def render_phone_auth_view(request):
     if request.user.is_authenticated and request.user.is_active:
         participant_instance = Participant.objects.get(user=request.user)
         if not participant_instance.verifiedPhone:
-            return render(request, 'covid/phone_auth_view.html', {'page_name': 'Life Nest | Phone Verification'})
+            return render(request, 'covid/phone_auth_view.html',
+                          {'page_name': 'Life Nest | Phone Verification', 'current_phone': participant_instance.phone})
         else:
             return redirect('index')
     else:
@@ -475,7 +479,8 @@ def change_phone_view(request):
         participant_instance = Participant.objects.get(user=request.user)
         if can_access:
             phone = participant_instance.phone
-            form = UpdatePhoneForm(request.POST or None, instance=participant_instance, participant=participant_instance)
+            form = UpdatePhoneForm(request.POST or None, instance=participant_instance,
+                                   participant=participant_instance)
             if request.POST and form.is_valid():
                 if find_user(str(phone)):
                     delete_user(str(phone))
@@ -492,7 +497,8 @@ def change_phone_view(request):
             last_update = participant_instance.lastPhoneUpdate
             delta = last_update - yesterday
             return render(request, 'covid/update_phone_view.html',
-                          {'page_name': 'Life Nest | Update Phone', 'form': None, 'can_access': can_access, 'hours_remaining': delta.seconds//3600})
+                          {'page_name': 'Life Nest | Update Phone', 'form': None, 'can_access': can_access,
+                           'hours_remaining': delta.seconds // 3600})
 
     else:
         return redirect('index')

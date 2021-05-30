@@ -63,6 +63,7 @@ SERVICE_CHOICES = [
     ('Monetary Donations', 'Monetary Donations'),
     ('Plasma Donations', 'Plasma Donations'),
     ('Laboratory Testing', 'Laboratory Testing'),
+    ('Vaccine Clinics', 'Vaccine Clinics'),
 ]
 
 
@@ -72,7 +73,6 @@ class Participant(models.Model):
     state = models.CharField(max_length=30, choices=STATE_CHOICES, default='Andhra Pradesh')
     city = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
-    # supplier_services = models.ManyToManyField(Service)
 
     # contacts
     phone = PhoneNumberField(max_length=20, unique=True, blank=False,
@@ -142,11 +142,3 @@ class Service(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class VerifiedPhone(models.Model):
-    phone = PhoneNumberField(max_length=20, unique=True, blank=False,
-                             help_text='OTP verification will be required as next step. Format: +919999999999')
-
-    def __str__(self):
-        return str(self.phone)

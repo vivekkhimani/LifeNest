@@ -3,15 +3,19 @@
 {% load static %}
 
 {% block header %}
-    <link rel="stylesheet" href='{% static 'css/auth_forms_style.css' %}' />
+    <link rel="stylesheet" href='{% static 'css/auth_forms_style.css' %}'/>
 {% endblock %}
 
 {% block content %}
     <section class="align-items-center" style="margin-top: 20px;">
         <div class="wrapper rounded bg-white">
-            <p class="text-danger text-center"><b>You need to verify the phone number before accessing this part of the platform.</b></p>
-            <p class="text-black-50 text-center">Phone verification helps us keep the database clean and more relevant over time.</p>
-            <p class="text-black-50 text-center" style="padding-bottom: 20px;">Don't have an access to your number anymore? <a href="{% url 'change_phone' %}">Update it now.</a></p>
+            <p class="text-danger text-center"><b>You need to verify the phone number before accessing this part of the
+                platform.</b></p>
+            <p class="text-black-50 text-center">Phone verification helps us keep the database clean and more relevant
+                over time.</p>
+            <p class="text-danger text-center"><b>You are currently registered with {{ current_phone }}</b></p>
+            <p class="text-black-50 text-center" style="padding-bottom: 20px;">Don't have an access to your number
+                anymore? <a href="{% url 'change_phone' %}">Update it now.</a></p>
             <div class="row" style="margin-top:10px; justify-content: center;">
                 <div id="firebaseui-auth-container"></div>
                 <div id="loader">Loading...</div>
@@ -46,19 +50,19 @@
         firebase.analytics();
     </script>
     <script>
-    var ui = new firebaseui.auth.AuthUI(firebase.auth());
-    ui.start('#firebaseui-auth-container', {
-          callbacks: {
-            signInSuccessWithAuthResult: function(authResult, redirectUrl) {
-                // User successfully signed in.
-                // Return type determines whether we continue the redirect automatically
-                // or whether we leave that to developer to handle.
-                return true;
+        var ui = new firebaseui.auth.AuthUI(firebase.auth());
+        ui.start('#firebaseui-auth-container', {
+            callbacks: {
+                signInSuccessWithAuthResult: function (authResult, redirectUrl) {
+                    // User successfully signed in.
+                    // Return type determines whether we continue the redirect automatically
+                    // or whether we leave that to developer to handle.
+                    return true;
                 },
-            uiShown: function() {
-                // The widget is rendered.
-                // Hide the loader.
-                document.getElementById('loader').style.display = 'none';
+                uiShown: function () {
+                    // The widget is rendered.
+                    // Hide the loader.
+                    document.getElementById('loader').style.display = 'none';
                 }
             },
             signInFlow: 'popup',
@@ -70,12 +74,12 @@
                         type: 'image', // 'audio'
                         size: 'normal', // 'invisible' or 'compact'
                         badge: 'bottomleft' //' bottomright' or 'inline' applies to invisible.
-                        },
+                    },
                     defaultCountry: 'IN',
                 }
             ],
             tosUrl: 'https://portal.termshub.io/lifenest.io/',
             privacyPolicyUrl: 'https://portal.termshub.io/lifenest.io/',
-    });
+        });
     </script>
 {% endblock %}
