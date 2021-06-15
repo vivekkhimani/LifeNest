@@ -78,7 +78,7 @@ SECRET_KEY = get_secrets("SECRET_KEY")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lifenest',
+        'NAME': 'lifenest_stage',
         'USER': get_secrets("DB_USER"),
         'PASSWORD': get_secrets("DB_PASSWORD"),
         'PORT': '5432',

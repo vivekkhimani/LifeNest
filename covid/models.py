@@ -55,15 +55,17 @@ PAYMENT_CHOICES = [
 SERVICE_CHOICES = [
     ('Oxygen', 'Oxygen'),
     ('Medications (no Remdesivir)', 'Medications (no Remdesivir)'),
-    ('Remdesivir', 'Remdesivir'),
+    ('Mucomycosis Drugs', 'Mucomycosis Drugs'),
     ('Hospital Beds', 'Hospital Beds'),
     ('Ventilator Beds', 'Ventilator Beds'),
     ('Home-made Food', 'Home-made Food'),
     ('Ambulance', 'Ambulance'),
     ('Monetary Donations', 'Monetary Donations'),
-    ('Plasma Donations', 'Plasma Donations'),
     ('Laboratory Testing', 'Laboratory Testing'),
     ('Vaccine Clinics', 'Vaccine Clinics'),
+    ('Tiffin Services', 'Tiffin Services'),
+    ('Restaurants', 'Restaurants'),
+    ('Counselling Services', 'Counselling Services'),
 ]
 
 

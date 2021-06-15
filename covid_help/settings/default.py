@@ -92,6 +92,16 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, '../db.sqlite3'),
     }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'HOST': '35.222.236.158',
+#         'NAME': 'lifenest_stage',
+#         'USER': 'postgres_stage',
+#         'PASSWORD': 'postgres_stage',
+#         'PORT': '5432',
+#     }
+# }
 
 # Email sending settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
