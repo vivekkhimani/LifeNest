@@ -86,11 +86,6 @@ DATABASES = {
     }
 }
 CONN_MAX_AGE = 7200
-DATABASES['default']['HOST'] = '/cloudsql/lifenest-315103:asia-south1:lifenest-instance'
-if os.getenv('GAE_INSTANCE'):
-    pass
-else:
-    DATABASES['default']['HOST'] = '127.0.0.1'
 
 # static files
 STATIC_ROOT = '/var/www/LifeNest/static/'
