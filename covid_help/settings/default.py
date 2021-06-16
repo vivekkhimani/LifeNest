@@ -86,22 +86,23 @@ WSGI_APPLICATION = 'covid_help.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, '../db.sqlite3'),
+#    }
+#}
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, '../db.sqlite3'),
-    }
-}
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'HOST': '35.222.236.158',
-#         'NAME': 'lifenest_stage',
-#         'USER': 'postgres_stage',
-#         'PASSWORD': 'postgres_stage',
-#         'PORT': '5432',
-#     }
-# }
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'HOST': '35.222.236.158',
+            'NAME': 'dbfp9i7oltlkdf',
+            'USER': 'upez3d2icztqz',
+            'PASSWORD': 'postgres_stage',
+            'PORT': '5432',
+            }
+        }
 
 # Email sending settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -140,7 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '../collected_static/')
+STATIC_ROOT = os.path.join(BASE_DIR, '../static/')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

@@ -78,7 +78,8 @@ SECRET_KEY = get_secrets("SECRET_KEY")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lifenest_stage',
+        'HOST': '35.222.236.158',
+        'NAME': 'dbaeo71xp0tn73',
         'USER': get_secrets("DB_USER"),
         'PASSWORD': get_secrets("DB_PASSWORD"),
         'PORT': '5432',
@@ -92,4 +93,6 @@ else:
     DATABASES['default']['HOST'] = '127.0.0.1'
 
 # static files
-STATIC_URL = 'https://storage.googleapis.com/lifenest_static/'
+STATIC_ROOT = '/var/www/LifeNest/static/'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = '/var/www/LifeNest/media/'
