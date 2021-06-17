@@ -7,9 +7,11 @@ from django.contrib.auth import authenticate, login, logout, update_session_auth
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
+from django.views.decorators.cache import cache_page
 from django.views.decorators.debug import sensitive_variables, sensitive_post_parameters
 from django.utils.safestring import SafeString
 from django.utils import timezone
+from django.core.cache import caches
 
 from .firebase_auth import phone_auth_initialize, find_user, delete_user
 from .decorators import phone_number_verified
@@ -21,6 +23,8 @@ import logging
 
 logger = logging.getLogger(__name__)
 phone_auth_initialize()
+
+resource_cache = caches['resource_list']
 
 
 # Create your views here.
@@ -42,7 +46,11 @@ def index(request):
 
 
 def landing_view(request):
-    services = Service.objects.all()
+    services = resource_cache.get("resource_list")
+    print(services)
+    if not services:
+        services = Service.objects.all()
+        resource_cache.set("resource_list", services)
     context = {
         'page_name': 'Life Nest | Welcome',
         'services': services
@@ -64,6 +72,7 @@ def add_resource(request):
                 current_user = Participant.objects.get(user=request.user)
                 service_instance.provider = current_user
                 service_instance.save()
+                resource_cache.set("resource_list", None)
                 messages.success(request, "The service was successfully added.")
                 return redirect('landing')
             else:
@@ -116,6 +125,7 @@ def edit_resource(request, pk=None):
         service_form = ServiceForm(request.POST or None, instance=service_instance)
         if request.POST and service_form.is_valid():
             service_form.save()
+            resource_cache.set("resource_list", None)
             return redirect(reverse('view_service', args=[pk]))
         else:
             return render(request, 'covid/add_service.html',
@@ -132,6 +142,7 @@ def delete_resource(request, pk=None):
         if service_instance.provider.user != request.user:
             return HttpResponseForbidden()
         Service.objects.filter(id=pk).delete()
+        resource_cache.set("resource_list", None)
         return redirect('index')
     else:
         return redirect('index')
@@ -144,6 +155,7 @@ def scam_resource(request, pk=None):
         service_instance = get_object_or_404(Service, pk=pk)
         service_instance.scam_votes.add(curr_participant)
         service_instance.save()
+        resource_cache.set("resource_list", None)
         provider_instance = service_instance.provider
         provider_instance.num_scams += 1
         provider_instance.save()
@@ -159,6 +171,7 @@ def help_resource(request, pk=None):
         service_instance = get_object_or_404(Service, pk=pk)
         service_instance.help_votes.add(curr_participant)
         service_instance.save()
+        resource_cache.set("resource_list", None)
         provider_instance = service_instance.provider
         provider_instance.num_helps += 1
         provider_instance.save()
@@ -174,6 +187,7 @@ def undo_scam_resource(request, pk=None):
         service_instance = get_object_or_404(Service, pk=pk)
         service_instance.scam_votes.remove(curr_participant)
         service_instance.save()
+        resource_cache.set("resource_list", None)
         provider_instance = service_instance.provider
         provider_instance.num_scams -= 1
         provider_instance.save()
@@ -189,6 +203,7 @@ def undo_help_resource(request, pk=None):
         service_instance = get_object_or_404(Service, pk=pk)
         service_instance.help_votes.remove(curr_participant)
         service_instance.save()
+        resource_cache.set("resource_list", None)
         provider_instance = service_instance.provider
         provider_instance.num_helps -= 1
         provider_instance.save()
