@@ -47,7 +47,6 @@ def index(request):
 
 def landing_view(request):
     services = resource_cache.get("resource_list")
-    print(services)
     if not services:
         services = Service.objects.all()
         resource_cache.set("resource_list", services)
