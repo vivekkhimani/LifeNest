@@ -21,12 +21,15 @@ DEBUG = False
 
 # production email settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'lifenest.io'
+EMAIL_HOST = '35.222.236.158'
 EMAIL_HOST_USER = get_secrets('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = get_secrets('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = 587
+EMAIL_PORT = 2525
 DEFAULT_FROM_EMAIL = 'noreply@lifenest.io'
 EMAIL_USE_TLS = True
+EMAIL_TIMEOUT=20
+# EMAIL_SSL_CERTFILE = os.path.join(BASE_DIR, 'fullchain.pem')
+# EMAIL_SSL_KEYFILE = os.path.join(BASE_DIR, 'privkey.pem')
 
 # admins for alerting
 ADMINS = [
