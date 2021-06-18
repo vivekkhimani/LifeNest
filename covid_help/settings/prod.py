@@ -81,8 +81,8 @@ SECRET_KEY = get_secrets("SECRET_KEY")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': '35.222.236.158',
-        'NAME': 'dbaeo71xp0tn73',
+        'HOST': '127.0.0.1',
+        'NAME': 'postgres',
         'USER': get_secrets("DB_USER"),
         'PASSWORD': get_secrets("DB_PASSWORD"),
         'PORT': '5432',

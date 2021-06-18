@@ -99,7 +99,6 @@ DATABASES = {
             'HOST': '35.222.236.158',
             'NAME': 'dbfp9i7oltlkdf',
             'USER': 'upez3d2icztqz',
-            'PASSWORD': 'postgres_stage',
             'PORT': '5432',
             }
         }
