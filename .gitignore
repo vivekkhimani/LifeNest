@@ -1,5 +1,6 @@
 # credentials
 secrets.json
+secrets.py
 firebase_service_credentials.json
 
 # Byte-compiled / optimized / DLL files
