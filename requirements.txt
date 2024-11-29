@@ -31,7 +31,7 @@ msgpack==1.0.2
 packaging==20.9
 phonenumberslite==8.12.21
 proto-plus==1.18.1
-protobuf==3.17.0
+protobuf==3.18.3
 psycopg2-binary==2.8.6
 pyasn1==0.4.8
 pyasn1-modules==0.2.8
